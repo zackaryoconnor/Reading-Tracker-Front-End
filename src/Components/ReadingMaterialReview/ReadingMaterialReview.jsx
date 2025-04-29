@@ -1,22 +1,4 @@
-// import { Link } from "react-router-dom";
-
-// const ReadingDetails = () => {
-//   return (
-//     <div className="absolute top-0 left-64 p-4">
-//       <div>
-//         <h1 className="text-xl font-bold">Title of Book</h1>
-//         <h2>Author of Book</h2>
-//       </div>
-//       <div>
-
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ReadingDetails;
-
-const BookReview = () => {
+const ReadingMaterialReview = () => {
   return (
     <div className="absolute top-0 left-64 p-4 sm:p-6 bg-gray-100 min-h-screen">
       <div>
@@ -56,10 +38,10 @@ const BookReview = () => {
         <div className="bg-white p-4 rounded shadow space-y-3">
           <img src="#" alt="Book Cover" className="rounded mb-4 mx-auto" />
           <p>
-            <strong>Start date:</strong> Apr 2023
+            <strong>Start date:</strong> Apr 2025
           </p>
           <p>
-            <strong>Finish date:</strong> Apr 2023
+            <strong>Finish date:</strong> Apr 2025
           </p>
           <p>
             <strong>Format:</strong> Ebook
@@ -71,7 +53,6 @@ const BookReview = () => {
         </div>
       </div>
 
-      {/* Bottom Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 text-black">
         <ReviewCard
           title="Quotes to remember"
@@ -106,4 +87,4 @@ const ReviewCard = ({ title, content, emoji }) => (
   </div>
 );
 
-export default BookReview;
+export default ReadingMaterialReview;

@@ -11,7 +11,7 @@ const Navbar = () => {
         <NavLink
             to="/reading" className={({ isActive }) => `w-full px-3 py-2 rounded text-left transition ${ isActive ? "bg-stone-800 font-bold" : "hover:bg-stone-700"}`} > {" "}Reading
         </NavLink>
-        <NavLink to="/reading-details" className={({ isActive }) => `w-full px-3 py-2 rounded text-left transition ${ isActive ? "bg-stone-800 font-bold" : "hover:bg-stone-700" }`} > {" "} Reading Details
+        <NavLink to="/reading-material-review" className={({ isActive }) => `w-full px-3 py-2 rounded text-left transition ${ isActive ? "bg-stone-800 font-bold" : "hover:bg-stone-700" }`} > {" "} Reading Review
         </NavLink>
     </nav>
   )

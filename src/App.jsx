@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import Reading from "./Components/Reading/Reading.jsx";
-import ReadingDetails from "./Components/ReadingDetails/ReadingDetails.jsx";
+import ReadingMaterialReview from "./Components/ReadingMaterialReview/ReadingMaterialReview.jsx";
 
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/reading" element={ <Reading /> } />
-        <Route path="/reading-details" element={ <ReadingDetails /> } />
+        <Route path="/reading-material-review" element={ <ReadingMaterialReview /> } />
       </Routes>
     </Router>
   );
