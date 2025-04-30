@@ -1,5 +1,5 @@
 {
-  "name": "new-project",
+  "name": "book-rewiews-app",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
