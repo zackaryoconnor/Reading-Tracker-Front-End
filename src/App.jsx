@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import BookDetail from './components/BookDetail'
 import FeaturedBook from './components/FeaturedBook'
 import Header from './components/Header'
@@ -6,12 +7,10 @@ import Loading from './components/Loading'
 import NewsSection from './components/NewsSection'
 import Recommendations from './components/Recommendations'
 import Sidebar from './components/Sidebar'
-import { getFeaturedBooks, getNewsItems } from './services/dataService'
-
-// Pages
 import Authors from './pages/Authors'
 import Blog from './pages/Blog'
 import Bookshelf from './pages/Bookshelf'
+import { getFeaturedBooks, getNewsItems } from './services/dataService'
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')
@@ -19,10 +18,8 @@ function App() {
   const [featuredBook, setFeaturedBook] = useState(null)
   const [newsItems, setNewsItems] = useState([])
   const [loading, setLoading] = useState(true)
-
-  // Routing state
-  const [currentPage, setCurrentPage] = useState('discover')
   const [selectedBookId, setSelectedBookId] = useState(null)
+  const location = useLocation()
 
   useEffect(() => {
     // Fetch featured book and news items when the component mounts
@@ -51,17 +48,6 @@ function App() {
 
   const handleSearch = (query) => {
     setSearchQuery(query)
-    // For search results, we should switch to the discover page
-    setCurrentPage('discover')
-  }
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page)
-    // Reset search and genre when changing pages
-    if (page !== 'discover') {
-      setSearchQuery('')
-      setSelectedGenre('All')
-    }
   }
 
   const handleViewBookDetails = (bookId) => {
@@ -72,58 +58,34 @@ function App() {
     setSelectedBookId(null)
   }
 
-  // Render the current page based on state
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'discover':
-        return (
-          <>
-            <div className="primary-content">
-              {featuredBook && (
-                <FeaturedBook
-                  book={featuredBook}
-                  onViewDetails={() => handleViewBookDetails(featuredBook.id)}
-                />
-              )}
-              <Recommendations
-                genre={selectedGenre}
-                searchQuery={searchQuery}
-                onViewDetails={handleViewBookDetails}
-              />
-            </div>
-            <NewsSection news={newsItems} />
-          </>
-        )
-      case 'bookshelf':
-        return <Bookshelf onViewDetails={handleViewBookDetails} />
-      case 'blog':
-        return <Blog />
-      case 'authors':
-        return <Authors onViewDetails={handleViewBookDetails} />
-      default:
-        return (
-          <div className="page-not-found">
-            <h2>Page Not Found</h2>
-            <p>The page you're looking for doesn't exist or is still under development.</p>
-            <button
-              className="btn-primary"
-              onClick={() => handlePageChange('discover')}
-            >
-              Back to Home
-            </button>
-          </div>
-        )
-    }
-  }
+  // Discover page component
+  const DiscoverPage = () => (
+    <>
+      <div className="primary-content">
+        {featuredBook && (
+          <FeaturedBook
+            book={featuredBook}
+            onViewDetails={() => handleViewBookDetails(featuredBook.id)}
+          />
+        )}
+        <Recommendations
+          genre={selectedGenre}
+          searchQuery={searchQuery}
+          onViewDetails={handleViewBookDetails}
+        />
+      </div>
+      <NewsSection news={newsItems} />
+    </>
+  );
 
   return (
     <div className="app">
-      <Sidebar activePage={currentPage} onPageChange={handlePageChange} />
+      <Sidebar />
       <div className="main-content">
         <Header
           onGenreChange={handleGenreChange}
           onSearch={handleSearch}
-          activePage={currentPage}
+          currentPath={location.pathname}
         />
         <div className="content-container">
           {loading ? (
@@ -131,7 +93,18 @@ function App() {
               <Loading size="large" text="Loading content..." />
             </div>
           ) : (
-            renderCurrentPage()
+            <Routes>
+              <Route path="/" element={<DiscoverPage />} />
+              <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
+              <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="*" element={
+                <div className="page-not-found">
+                  <h2>Page Not Found</h2>
+                  <p>The page you're looking for doesn't exist or is still under development.</p>
+                </div>
+              } />
+            </Routes>
           )}
         </div>
       </div>
