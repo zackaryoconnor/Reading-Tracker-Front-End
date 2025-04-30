@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { getAllCategories } from '../services/dataService'
 import './Header.css'
 import SearchBar from './SearchBar'
 
-const Header = ({ onGenreChange, onSearch, activePage = 'discover' }) => {
+const Header = ({ onGenreChange, onSearch }) => {
   const [activeCategory, setActiveCategory] = useState('All')
   const [categories, setCategories] = useState([
     { id: 'all', name: 'All' },
@@ -14,47 +15,85 @@ const Header = ({ onGenreChange, onSearch, activePage = 'discover' }) => {
 
   const [genres, setGenres] = useState([])
   const [showGenreDropdown, setShowGenreDropdown] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesData = await getAllCategories()
-        if (categoriesData && categoriesData.length > 0) {
-          // Update the genres list
-          setGenres(categoriesData.map(cat => cat.name))
+    // Only fetch categories on home page
+    if (location.pathname === '/') {
+      const fetchCategories = async () => {
+        try {
+          const categoriesData = await getAllCategories()
+          if (categoriesData && categoriesData.length > 0) {
+            setGenres(categoriesData.map(cat => cat.name))
+          }
+        } catch (error) {
+          console.error('Error fetching categories:', error)
         }
-      } catch (error) {
-        console.error('Error fetching categories:', error)
       }
-    }
 
-    fetchCategories()
-  }, [])
+      fetchCategories()
+    }
+  }, [location.pathname])
 
   const handleCategoryClick = (category) => {
-    setActiveCategory(category.name)
-    if (category.hasDropdown) {
-      setShowGenreDropdown(prev => !prev)
+    // Only allow category filtering on home page
+    if (location.pathname !== '/') {
+      navigate('/')
+      // Wait for navigation to complete
+      setTimeout(() => {
+        setActiveCategory(category.name)
+        if (category.hasDropdown) {
+          setShowGenreDropdown(prev => !prev)
+        } else {
+          setShowGenreDropdown(false)
+          onGenreChange(category.name)
+        }
+      }, 100)
     } else {
-      setShowGenreDropdown(false)
-      onGenreChange(category.name)
+      setActiveCategory(category.name)
+      if (category.hasDropdown) {
+        setShowGenreDropdown(prev => !prev)
+      } else {
+        setShowGenreDropdown(false)
+        onGenreChange(category.name)
+      }
     }
   }
 
   const handleGenreSelect = (genre) => {
-    setActiveCategory(genre)
-    setShowGenreDropdown(false)
-    onGenreChange(genre)
+    if (location.pathname !== '/') {
+      navigate('/')
+      // Wait for navigation to complete
+      setTimeout(() => {
+        setActiveCategory(genre)
+        setShowGenreDropdown(false)
+        onGenreChange(genre)
+      }, 100)
+    } else {
+      setActiveCategory(genre)
+      setShowGenreDropdown(false)
+      onGenreChange(genre)
+    }
   }
 
   const handleSearch = (query) => {
-    onSearch(query)
+    // Redirect to home page for search
+    if (location.pathname !== '/') {
+      navigate('/')
+      // Wait for navigation to complete
+      setTimeout(() => {
+        onSearch(query)
+      }, 100)
+    } else {
+      onSearch(query)
+    }
   }
 
-  // Render page-specific header content
+  // Render different header content based on current route
   const renderHeaderContent = () => {
-    switch (activePage) {
-      case 'discover':
+    switch (location.pathname) {
+      case '/':
         return (
           <nav className="categories">
             {categories.map((category) => (
@@ -85,7 +124,7 @@ const Header = ({ onGenreChange, onSearch, activePage = 'discover' }) => {
             )}
           </nav>
         )
-      case 'bookshelf':
+      case '/bookshelf':
         return (
           <nav className="categories">
             <div className="category active">My Books</div>
@@ -94,7 +133,7 @@ const Header = ({ onGenreChange, onSearch, activePage = 'discover' }) => {
             <div className="category">Completed</div>
           </nav>
         )
-      case 'authors':
+      case '/authors':
         return (
           <nav className="categories">
             <div className="category active">All Authors</div>
@@ -102,7 +141,7 @@ const Header = ({ onGenreChange, onSearch, activePage = 'discover' }) => {
             <div className="category">New Releases</div>
           </nav>
         )
-      case 'blog':
+      case '/blog':
         return (
           <nav className="categories">
             <div className="category active">All Posts</div>
@@ -118,7 +157,7 @@ const Header = ({ onGenreChange, onSearch, activePage = 'discover' }) => {
 
   return (
     <header className="header">
-      <div className="logo">
+      <div className="logo" onClick={() => navigate('/')}>
         <span className="logo-text">T.Book</span>
       </div>
 
