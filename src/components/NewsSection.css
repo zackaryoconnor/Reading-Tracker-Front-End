@@ -1,102 +1,161 @@
 .news-section {
-  display: none;
-  width: 20rem;
-  border-left: 1px solid var(--border);
-  background-color: var(--background);
+  width: 300px;
+  background-color: var(--background-light);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
 }
 
-.news-section-header {
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+.news-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.news-section-title {
+.news-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
   display: flex;
   align-items: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--primary);
 }
 
-.news-section-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.5rem;
+.news-header h2:before {
+  content: '📰';
+  margin-right: 10px;
+  font-size: 24px;
 }
 
-.news-section-content {
-  position: relative;
-  margin: 0 1.5rem;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background-color: var(--muted);
+.news-items {
+  flex: 1;
 }
 
-.news-section-item {
-  display: block;
-}
-
-.news-section-item-title {
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #a78bfa;
-}
-
-.news-section-item-title:hover {
-  text-decoration: underline;
-}
-
-.news-section-item-content {
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: var(--muted-foreground);
-}
-
-.news-section-footer {
+.news-item {
   display: flex;
-  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.news-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.news-image {
+  width: 80px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.news-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-title {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-light);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.news-source {
+  font-size: 12px;
+  color: var(--text-gray);
+  font-style: italic;
+}
+
+.no-news {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-gray);
+  font-style: italic;
+}
+
+.news-footer {
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.news-section-date {
-  font-size: 0.75rem;
-  color: var(--muted-foreground);
-}
-
-.news-section-navigation {
+.pagination-controls {
   display: flex;
   align-items: center;
 }
 
-.news-section-pagination {
-  margin-right: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--muted-foreground);
-}
-
-.news-section-nav-button {
+.page-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem;
-  border-radius: 9999px;
-  color: var(--muted-foreground);
-  transition: background-color 0.2s, color 0.2s;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--text-gray);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0 5px;
 }
 
-.news-section-nav-button:hover {
-  background-color: var(--secondary);
-  color: var(--foreground);
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.news-section-nav-icon {
-  width: 1rem;
-  height: 1rem;
+.page-btn:not(:disabled):hover {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
 }
 
-@media (min-width: 1024px) {
+.news-date {
+  font-size: 14px;
+  color: var(--text-gray);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+.current-page {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.separator {
+  margin: 0 5px;
+  color: var(--text-gray);
+}
+
+.total-pages {
+  color: var(--text-gray);
+  font-size: 14px;
+}
+
+@media (max-width: 992px) {
   .news-section {
-    display: block;
+    width: 100%;
+    margin-top: 20px;
   }
 }

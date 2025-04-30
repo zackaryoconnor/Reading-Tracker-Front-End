@@ -1,48 +1,99 @@
-import { Heart } from "lucide-react"
-import React, { useState } from "react"
-import { Link } from "react-router-dom"
-import "./BookCard.css"
+import { useState } from 'react'
+import { toggleFavorite, updateReadingStatus } from '../services/dataService'
+import './BookCard.css'
 
-const BookCard = ({ id, title, author, coverUrl, rating, genres }) => {
-  const [isFavorite, setIsFavorite] = useState(false)
+const BookCard = ({ book, onViewDetails }) => {
+  const [isHovered, setIsHovered] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(book.isFavorite || false)
+  const [isProcessing, setIsProcessing] = useState(false)
 
-  const toggleFavorite = (e) => {
-    e.preventDefault()
+  const handleToggleFavorite = async (e) => {
     e.stopPropagation()
-    setIsFavorite(!isFavorite)
+
+    if (isProcessing) return
+
+    setIsProcessing(true)
+    try {
+      const updatedBook = await toggleFavorite(book.id)
+      if (updatedBook) {
+        setIsFavorite(updatedBook.isFavorite)
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const handleReadNow = async (e) => {
+    e.stopPropagation()
+
+    if (isProcessing) return
+
+    setIsProcessing(true)
+    try {
+      await updateReadingStatus(book.id, 'reading', 0)
+      // In a real app, you'd probably want to update UI, show a notification, etc.
+    } catch (error) {
+      console.error('Error updating reading status:', error)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const handleCardClick = () => {
+    if (onViewDetails) {
+      onViewDetails(book.id)
+    }
   }
 
   return (
-    <Link to={`/books/${id}`} className="book-card">
-      <div className="book-card-cover-container">
-        <img src={coverUrl || "/placeholder.svg"} alt={`Cover of ${title}`} className="book-card-cover" />
-        <div className="book-card-overlay"></div>
+    <div
+      className="book-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
+    >
+      <div className="book-cover">
+        <img src={book.coverImage} alt={book.title} />
 
-        <button
-          onClick={toggleFavorite}
-          className={`book-card-favorite ${isFavorite ? "book-card-favorite-active" : ""}`}
+        <div className={`book-overlay ${isHovered ? 'visible' : ''}`}>
+          <button
+            className="overlay-btn"
+            onClick={handleReadNow}
+            disabled={isProcessing}
+          >
+            {isProcessing ? 'Adding...' : 'Read Now'}
+          </button>
+        </div>
+
+        <div
+          className={`favorite-btn ${isFavorite ? 'active' : ''} ${isProcessing ? 'processing' : ''}`}
+          onClick={handleToggleFavorite}
         >
-          <Heart className={`book-card-favorite-icon ${isFavorite ? "book-card-favorite-icon-filled" : ""}`} />
-        </button>
+          {isFavorite ? '♥' : '♡'}
+        </div>
 
-        <div className="book-card-genres">
-          {genres.map((genre, index) => (
-            <span key={index} className="book-card-genre">
-              {genre}
+        {book.rating && (
+          <div className="book-rating">
+            <span>{book.rating}</span>
+            <span className="rating-max">/10</span>
+          </div>
+        )}
+      </div>
+
+      <div className="book-info">
+        <h3 className="book-title">{book.title}</h3>
+        <p className="book-author">{book.authorName}</p>
+        <div className="book-categories">
+          {book.categories.map((category, index) => (
+            <span key={index} className="book-category">
+              {category}{index < book.categories.length - 1 && ', '}
             </span>
           ))}
         </div>
       </div>
-
-      <div className="book-card-info">
-        <div className="book-card-rating">
-          <div className="book-card-rating-badge">{rating.toFixed(1)}</div>
-          <span className="book-card-rating-max">/5</span>
-        </div>
-        <h3 className="book-card-title">{title}</h3>
-        <p className="book-card-author">{author}</p>
-      </div>
-    </Link>
+    </div>
   )
 }
 

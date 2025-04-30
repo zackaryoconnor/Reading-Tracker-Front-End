@@ -1,73 +1,64 @@
-import { BookOpen, Bookmark, Compass, HelpCircle, MessageSquare, Settings, Users } from "lucide-react";
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Sidebar.css";
+import { useState } from 'react'
+import './Sidebar.css'
 
-const Sidebar = () => {
+const Sidebar = ({ activePage = 'discover', onPageChange }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const menuItems = [
+    { id: 'discover', name: 'Discover', icon: '🔍' },
+    { id: 'bookshelf', name: 'Bookshelf', icon: '📚' },
+    { id: 'blog', name: 'Blog', icon: '📝' },
+    { id: 'authors', name: 'Authors', icon: '✍️' },
+    { id: 'contact', name: 'Contact Us', icon: '📞' },
+    { id: 'help', name: 'Help Center', icon: '❓' },
+    { id: 'settings', name: 'Setting', icon: '⚙️' }
+  ]
+
+  const handleItemClick = (id) => {
+    onPageChange(id)
+    setIsMobileMenuOpen(false)
+  }
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <Link to="/" className="sidebar-logo">
-          <BookOpen className="sidebar-logo-icon" />
-          <span className="sidebar-logo-text">BookHaven</span>
-        </Link>
+    <>
+      <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+        {isMobileMenuOpen ? '✕' : '☰'}
       </div>
 
-      <div className="sidebar-content">
-        <p className="sidebar-section-title">Menu</p>
+      <div className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        <div className="sidebar-header">
+          <div className="logo" onClick={() => handleItemClick('discover')} style={{ cursor: 'pointer' }}>
+            <span className="logo-text">T.Book</span>
+          </div>
+          <div className="menu-label">Menu</div>
+        </div>
 
         <nav className="sidebar-nav">
-          <Link to="/discover" className="sidebar-nav-item sidebar-nav-item-active">
-            <Compass className="sidebar-nav-icon" />
-            <span className="sidebar-nav-text">Discover</span>
-          </Link>
-
-          <Link to="/reading-list" className="sidebar-nav-item">
-            <Bookmark className="sidebar-nav-icon" />
-            <span className="sidebar-nav-text">Reading List</span>
-          </Link>
-
-          <Link to="/blog" className="sidebar-nav-item">
-            <MessageSquare className="sidebar-nav-icon" />
-            <span className="sidebar-nav-text">Book Blog</span>
-          </Link>
-
-          <Link to="/authors" className="sidebar-nav-item">
-            <Users className="sidebar-nav-icon" />
-            <span className="sidebar-nav-text">Authors</span>
-          </Link>
+          {menuItems.map((item) => (
+            <div
+              key={item.id}
+              className={`nav-item ${activePage === item.id ? 'active' : ''}`}
+              onClick={() => handleItemClick(item.id)}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-text">{item.name}</span>
+            </div>
+          ))}
         </nav>
 
-        <div className="sidebar-footer">
-          <p className="sidebar-section-title">Support</p>
-
-          <nav className="sidebar-nav">
-            <Link to="/contact" className="sidebar-nav-item">
-              <MessageSquare className="sidebar-nav-icon" />
-              <span className="sidebar-nav-text">Contact Us</span>
-            </Link>
-
-            <Link to="/help" className="sidebar-nav-item">
-              <HelpCircle className="sidebar-nav-icon" />
-              <span className="sidebar-nav-text">Help Center</span>
-            </Link>
-
-            <Link to="/settings" className="sidebar-nav-item">
-              <Settings className="sidebar-nav-icon" />
-              <span className="sidebar-nav-text">Settings</span>
-            </Link>
-          </nav>
-        </div>
-
-        <div className="sidebar-premium">
-          <div className="sidebar-premium-content">
-            <p className="sidebar-premium-title">Premium Membership</p>
-            <p className="sidebar-premium-description">Get unlimited access to all books and exclusive content</p>
-            <button className="sidebar-premium-button">See Plans</button>
+        <div className="subscription-box">
+          <div className="sub-info">
+            <div className="sub-title">Click the button below</div>
+            <div className="sub-desc">to see the plans</div>
           </div>
+          <button className="sub-button">see plans</button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
