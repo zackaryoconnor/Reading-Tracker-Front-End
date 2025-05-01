@@ -519,18 +519,27 @@ export const getAllCategories = () => {
 };
 
 // Get user bookshelf
-export const getUserBookshelf = (userId = null) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // We're just returning the current user's bookshelf for now
-      const bookshelfWithDetails = currentUser.bookshelf.map(item => {
-        const book = books.find(b => b.id === item.bookId);
-        return { ...item, bookDetails: book };
-      });
-      resolve(bookshelfWithDetails);
-    }, 300);
-  });
+export const getUserBookshelf = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reading-materials/`);
+    const data = await response.json();
+
+    // Map Django's reading materials to the format expected by Bookshelf.jsx
+    const bookshelfWithDetails = data.map((book) => ({
+      bookId: book.id,
+      status: book.readingStatus || 'want-to-read',
+      progress: book.readingStatus === 'read' ? 1 : 0,
+      dateAdded: book.created_at,
+      bookDetails: book,
+    }));
+
+    return bookshelfWithDetails;
+  } catch (error) {
+    console.error('Error fetching bookshelf from backend:', error);
+    throw error;
+  }
 };
+
 
 // Toggle favorite status for a book
 export const toggleFavorite = (bookId) => {

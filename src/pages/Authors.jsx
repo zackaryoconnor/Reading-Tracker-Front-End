@@ -11,9 +11,10 @@ const Authors = ({ onViewDetails }) => {
   useEffect(() => {
     setLoading(true)
   
-    fetch("http://localhost:8000/api/authors/")
+    fetch(`${import.meta.env.VITE_API_URL}/api/authors/`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setAuthorsList(data)
         setLoading(false)
       })
