@@ -9,14 +9,20 @@ const Authors = ({ onViewDetails }) => {
   const [selectedAuthor, setSelectedAuthor] = useState(null)
 
   useEffect(() => {
-    // Simulate API call to fetch authors
     setLoading(true)
-
-    setTimeout(() => {
-      setAuthorsList(authors)
-      setLoading(false)
-    }, 800)
+  
+    fetch("http://localhost:8000/api/authors/")
+      .then((res) => res.json())
+      .then((data) => {
+        setAuthorsList(data)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error("Failed to fetch authors:", err)
+        setLoading(false)
+      })
   }, [])
+  
 
   const handleAuthorClick = (authorId) => {
     // Find the selected author
