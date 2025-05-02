@@ -1,6 +1,8 @@
 // Dummy data for the application
 // This will serve as our temporary data store until a backend is implemented
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 // Authors data
 export const authors = [
   {
@@ -462,29 +464,45 @@ export const getRecommendedBooks = (userId = null) => {
   });
 };
 
-// Get author by id
-export const getAuthorById = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const author = authors.find(author => author.id === id);
-      if (author) {
-        resolve(author);
-      } else {
-        reject(new Error(`Author with id ${id} not found`));
-      }
-    }, 300);
-  });
+// Get all authors from backend
+export const getAuthors = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/reading-materials/authors`);
+    if (!response.ok) throw new Error("Failed to fetch authors");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching authors:", error);
+    throw error;
+  }
 };
 
-// Get books by author
-export const getBooksByAuthor = (authorId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const authorBooks = books.filter(book => book.author === authorId);
-      resolve(authorBooks);
-    }, 300);
-  });
+// Get author by ID from backend
+export const getAuthorById = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/reading-materials/authors/${id}/`);
+    if (!response.ok) throw new Error(`Author with ID ${id} not found`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching author by ID:", error);
+    throw error;
+  }
 };
+
+// Get books by author ID from backend
+export const getBooksByAuthor = async (authorId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/reading-materials/?authorId=${authorId}`);
+    if (!response.ok) throw new Error("Failed to fetch books for author");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching books by author:", error);
+    throw error;
+  }
+};
+
 
 // Get reviews for a book
 export const getReviewsForBook = (bookId) => {

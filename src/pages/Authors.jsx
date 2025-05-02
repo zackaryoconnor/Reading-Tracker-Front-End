@@ -152,26 +152,78 @@
 // export default Authors
 
 
+// // 1. Import dependencies and components
+// import { useEffect, useState } from 'react';
+// import Loading from '../components/Loading';
+// import { authors } from '../services/dataService';
+// import './Authors.css';
+
+// // 2. Define the Authors page component
+// const Authors = ({ onViewDetails }) => {
+//   // 2.2 Define state to hold author data and loading state
+//   const [authorList, setAuthorList] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   // 2.3 Load authors on component mount
+//   useEffect(() => {
+//     console.log("Authors loaded:", authors);
+//     // Simulate fetching authors from dataService
+//     setAuthorList(authors);
+//     setLoading(false);
+//   }, []);
+
+//   // 3. Return JSX to render authors
+//   return (
+//     <div className="authors-page">
+//       <h1>Authors</h1>
+//       {loading ? (
+//         <Loading size="large" text="Loading authors..." />
+//       ) : (
+//         <ul className="author-list">
+//           {authorList.map((author) => (
+//             <li key={author.id} className="author-item">
+//               <strong>{author.name}</strong>
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </div>
+//   );
+// };
+
+// // 4. Export the component
+// export default Authors;
+
+
 // 1. Import dependencies and components
 import { useEffect, useState } from 'react';
 import Loading from '../components/Loading';
-import { authors } from '../services/dataService';
+import { getAuthors } from '../services/dataService';
 import './Authors.css';
 
 // 2. Define the Authors page component
 const Authors = ({ onViewDetails }) => {
-  // 2.2 Define state to hold author data and loading state
+  // 2.1 Define state to hold author data and loading state
   const [authorList, setAuthorList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 2.3 Load authors on component mount
+  // 2.2 Fetch authors from the backend API on mount
   useEffect(() => {
-    // Simulate fetching authors from dataService
-    setAuthorList(authors);
-    setLoading(false);
+    const fetchAuthors = async () => {
+      try {
+        const data = await getAuthors();     // Fetch from Django API
+        setAuthorList(data);                 // Save results to state
+      } catch (err) {
+        console.error("Failed to load authors:", err);
+      } finally {
+        setLoading(false);                   // Hide loading spinner
+      }
+    };
+
+    fetchAuthors();
   }, []);
 
-  // 3. Return JSX to render authors
+  // 3. Return JSX to render the author list
   return (
     <div className="authors-page">
       <h1>Authors</h1>
