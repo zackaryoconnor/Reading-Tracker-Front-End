@@ -10,6 +10,7 @@ import Sidebar from './components/Sidebar'
 import Authors from './pages/Authors'
 import Blog from './pages/Blog'
 import Bookshelf from './pages/Bookshelf'
+import Review from './pages/Review/Review'
 import { getFeaturedBooks, getNewsItems } from './services/dataService'
 
 function App() {
@@ -98,6 +99,7 @@ function App() {
               <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
               <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/review" element={<Review />} />
               <Route path="*" element={
                 <div className="page-not-found">
                   <h2>Page Not Found</h2>
