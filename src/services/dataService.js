@@ -7,35 +7,35 @@ export const authors = [
     id: 1,
     name: "Matt Haig",
     biography: "Matt Haig is a British author who writes both fiction and non-fiction for children and adults, often blending elements of fantasy and mental health topics.",
-    photo: "https://via.placeholder.com/150",
+    photo: "/images/author1.png",
     popularBooks: [1, 5]
   },
   {
     id: 2,
     name: "Alex Michaelides",
     biography: "Alex Michaelides is a British-Cypriot author known for his psychological thrillers. He studied English literature at Cambridge University and screenwriting at the American Film Institute.",
-    photo: "https://via.placeholder.com/150",
+    photo: "/images/author2.png",
     popularBooks: [2]
   },
   {
     id: 3,
     name: "Tara Westover",
     biography: "Tara Westover is an American author and memoirist known for her memoir Educated. She was born in rural Idaho and raised by parents who were opposed to public education.",
-    photo: "https://via.placeholder.com/150",
+    photo: "/images/author3.png",
     popularBooks: [3]
   },
   {
     id: 4,
     name: "Delia Owens",
     biography: "Delia Owens is an American author and zoologist. She has co-authored several non-fiction books about her life as a wildlife scientist in Africa before writing her first novel.",
-    photo: "https://via.placeholder.com/150",
+    photo: "/images/author4.png",
     popularBooks: [4]
   },
   {
     id: 5,
     name: "Andy Weir",
     biography: "Andy Weir is an American novelist whose debut novel, The Martian, was later adapted into a film of the same name. He worked as a computer programmer before becoming a full-time writer.",
-    photo: "https://via.placeholder.com/150",
+    photo: "/images/author5.png",
     popularBooks: [6]
   }
 ];
@@ -47,7 +47,7 @@ const books = [
     title: "The Midnight Library",
     author: 1, // Matt Haig
     authorName: "Matt Haig",
-    coverImage: "https://via.placeholder.com/300x450?text=The+Midnight+Library",
+    coverImage: "/images/hero.png",
     rating: 9.3,
     publicationDate: "2020-08-13",
     pages: 304,
@@ -63,7 +63,7 @@ const books = [
     title: "The Silent Patient",
     author: 2, // Alex Michaelides
     authorName: "Alex Michaelides",
-    coverImage: "https://via.placeholder.com/300x450?text=The+Silent+Patient",
+    coverImage: "/images/third.png",
     rating: 8.1,
     publicationDate: "2019-02-05",
     pages: 336,
@@ -79,7 +79,7 @@ const books = [
     title: "Educated",
     author: 3, // Tara Westover
     authorName: "Tara Westover",
-    coverImage: "https://via.placeholder.com/300x450?text=Educated",
+    coverImage: "/images/second.png",
     rating: 8.6,
     publicationDate: "2018-02-20",
     pages: 352,
@@ -95,7 +95,7 @@ const books = [
     title: "Where the Crawdads Sing",
     author: 4, // Delia Owens
     authorName: "Delia Owens",
-    coverImage: "https://via.placeholder.com/300x450?text=Where+the+Crawdads+Sing",
+    coverImage: "/images/fr.png",
     rating: 8.0,
     publicationDate: "2018-08-14",
     pages: 384,
@@ -111,7 +111,7 @@ const books = [
     title: "The Humans",
     author: 1, // Matt Haig
     authorName: "Matt Haig",
-    coverImage: "https://via.placeholder.com/300x450?text=The+Humans",
+    coverImage: "/images/book1.png",
     rating: 8.3,
     publicationDate: "2013-05-09",
     pages: 304,
@@ -127,7 +127,7 @@ const books = [
     title: "Project Hail Mary",
     author: 5, // Andy Weir
     authorName: "Andy Weir",
-    coverImage: "https://via.placeholder.com/300x450?text=Project+Hail+Mary",
+    coverImage: "/images/book2.png",
     rating: 8.4,
     publicationDate: "2021-05-04",
     pages: 496,
@@ -143,7 +143,7 @@ const books = [
     title: "The Night Wanderer",
     author: 2, // Alex Michaelides
     authorName: "Alex Michaelides",
-    coverImage: "https://via.placeholder.com/300x450?text=The+Night+Wanderer",
+    coverImage: "/images/book3.png",
     rating: 8.2,
     publicationDate: "2023-09-12",
     pages: 352,
@@ -159,7 +159,7 @@ const books = [
     title: "Chronicles of the Forgotten: The Fourth Kingdom",
     author: 4, // Delia Owens
     authorName: "Delia Owens",
-    coverImage: "https://via.placeholder.com/300x450?text=Chronicles+of+the+Forgotten",
+    coverImage: "/images/book4.png",
     rating: 8.7,
     publicationDate: "2025-09-04",
     pages: 416,
@@ -300,7 +300,7 @@ const news = [
     title: "\"The Night Wanderer,\" the popular mystery novel, has been renewed for a sequel, much to the delight of its dedicated fanbase.",
     content: "Publisher HarperCollins has announced that Alex Michaelides will be writing a sequel to his popular mystery novel \"The Night Wanderer\". The announcement comes after the book spent 15 weeks on the New York Times bestseller list. The sequel, tentatively titled \"The Dawn Seeker\", is expected to be released in late 2026.",
     date: "2025-04-28",
-    image: "https://via.placeholder.com/150x100",
+    image: "/images/newscard2.png",
     author: "Literary Times"
   },
   {
@@ -308,7 +308,7 @@ const news = [
     title: "The highly anticipated fourth book in the \"Chronicles of the Forgotten\" series is set to premiere on September 4, 2025, promising more thrilling storylines and complex characters that readers have come to love.",
     content: "Fans of Delia Owens' epic fantasy series have been eagerly awaiting the fourth installment, which was delayed by six months due to the author's extensive research trips. The publisher has revealed that this will be the longest book in the series yet, clocking in at over 400 pages. Early reviews from critics who received advance copies have been overwhelmingly positive.",
     date: "2025-04-25",
-    image: "https://via.placeholder.com/150x100",
+    image: "/images/newscard.png",
     author: "Fantasy Book Review"
   },
   {
@@ -316,7 +316,7 @@ const news = [
     title: "Notable authors, including the acclaimed Gary Oldman and Cillian Murphy, will continue to bring depth and intrigue to the literary world with their upcoming releases.",
     content: "In a surprising career pivot, award-winning actors Gary Oldman and Cillian Murphy have both announced debut novels to be published next year. Oldman's historical fiction \"The Unseen Hand\" and Murphy's psychological thriller \"Quiet Minds\" have already generated significant buzz in publishing circles, with film rights being discussed before the books have even hit shelves.",
     date: "2025-04-20",
-    image: "https://via.placeholder.com/150x100",
+    image: "/images/newscard1.png",
     author: "Entertainment Weekly"
   },
   {
@@ -324,7 +324,7 @@ const news = [
     title: "Annual Book Festival to feature virtual reality reading rooms for the first time",
     content: "This year's International Book Festival will introduce cutting-edge virtual reality reading rooms, allowing attendees to immerse themselves in settings from popular books. Visitors can experience everything from the Hogwarts Great Hall to the dystopian landscape of The Hunger Games, bringing literature to life in unprecedented ways.",
     date: "2025-04-15",
-    image: "https://via.placeholder.com/150x100",
+    image: "/images/newscard2.png",
     author: "Tech & Literature"
   },
   {
@@ -332,7 +332,7 @@ const news = [
     title: "Study shows dramatic increase in audiobook consumption among young adults",
     content: "A recent study by the National Reading Foundation has found that audiobook consumption among 18-25 year olds has increased by 45% over the past two years. This shift is attributed to the rise of multitasking culture and improvements in audiobook production quality, with full cast recordings and ambient sound effects becoming increasingly common.",
     date: "2025-04-10",
-    image: "https://via.placeholder.com/150x100",
+    image: "/images/newscard4.png",
     author: "Publishing Insights"
   },
   {
@@ -340,7 +340,7 @@ const news = [
     title: "Local libraries embracing AI book recommendation systems",
     content: "Public libraries across the country are adopting AI-powered recommendation systems to help readers discover new books. These systems analyze reading history and preferences to suggest titles readers might enjoy, with early data showing a 30% increase in circulation for libraries that have implemented the technology.",
     date: "2025-04-05",
-    image: "https://via.placeholder.com/150x100",
+    image: "/images/newscard5.png",
     author: "Library Journal"
   }
 ];
@@ -519,18 +519,27 @@ export const getAllCategories = () => {
 };
 
 // Get user bookshelf
-export const getUserBookshelf = (userId = null) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // We're just returning the current user's bookshelf for now
-      const bookshelfWithDetails = currentUser.bookshelf.map(item => {
-        const book = books.find(b => b.id === item.bookId);
-        return { ...item, bookDetails: book };
-      });
-      resolve(bookshelfWithDetails);
-    }, 300);
-  });
+export const getUserBookshelf = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reading-materials/`);
+    const data = await response.json();
+
+    // Map Django's reading materials to the format expected by Bookshelf.jsx
+    const bookshelfWithDetails = data.map((book) => ({
+      bookId: book.id,
+      status: book.readingStatus || 'want-to-read',
+      progress: book.readingStatus === 'read' ? 1 : 0,
+      dateAdded: book.created_at,
+      bookDetails: book,
+    }));
+
+    return bookshelfWithDetails;
+  } catch (error) {
+    console.error('Error fetching bookshelf from backend:', error);
+    throw error;
+  }
 };
+
 
 // Toggle favorite status for a book
 export const toggleFavorite = (bookId) => {

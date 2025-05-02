@@ -125,29 +125,13 @@ const Header = ({ onGenreChange, onSearch }) => {
           </nav>
         )
       case '/bookshelf':
-        return (
-          <nav className="categories">
-            <div className="category active">My Books</div>
-            <div className="category">Reading Now</div>
-            <div className="category">Want to Read</div>
-            <div className="category">Completed</div>
-          </nav>
-        )
+        return null;
       case '/authors':
         return (
           <nav className="categories">
             <div className="category active">All Authors</div>
             <div className="category">Featured</div>
             <div className="category">New Releases</div>
-          </nav>
-        )
-      case '/blog':
-        return (
-          <nav className="categories">
-            <div className="category active">All Posts</div>
-            <div className="category">Book Reviews</div>
-            <div className="category">Author Interviews</div>
-            <div className="category">Literary News</div>
           </nav>
         )
       default:
