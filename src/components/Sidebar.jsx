@@ -10,7 +10,6 @@ const Sidebar = () => {
     { id: 'bookshelf', name: 'Bookshelf', icon: '📚', path: '/bookshelf' },
     { id: 'blog', name: 'Blog', icon: '📝', path: '/blog' },
     { id: 'authors', name: 'Authors', icon: '✍️', path: '/authors' },
-    { id: 'review', name: 'Review', icon: '✍️', path: '/review/:bookId' },
     { id: 'contact', name: 'Contact Us', icon: '📞', path: '/contact' },
     { id: 'help', name: 'Help Center', icon: '❓', path: '/help' },
     { id: 'settings', name: 'Setting', icon: '⚙️', path: '/settings' }

@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import styles from './AddReviewButton.module.css'
 
-
-export default function AddReviewButton({ bookId, ...props }) {
+export default function AddReviewButton({ bookId, onClose, ...props }) {
   const navigate = useNavigate()
 
   if (!bookId) {
@@ -10,13 +10,20 @@ export default function AddReviewButton({ bookId, ...props }) {
     return null
   }
 
-  const path = `/review/${bookId}`
+  const path = `/review/${ bookId }`
+
+  const handleClick = (event) => {
+    onClose?.()
+    navigate(path)
+    props.onClick?.(event)
+  }
   
   return (
     <button
       type="button"
       onClick={() => navigate(path)}
       {...props}
+      
     >
       Add a review +
     </button>

@@ -403,7 +403,7 @@ export const getAllBooks = () => {
 export const getBookById = (id) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const book = books.find(book => book.id === id);
+      const book = books.find(book => book.id == id);
       if (book) {
         resolve(book);
       } else {
