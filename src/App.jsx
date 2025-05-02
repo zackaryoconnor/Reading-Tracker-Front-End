@@ -1,103 +1,63 @@
-import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import BookDetail from "./components/BookDetail";
-import FeaturedBook from "./components/FeaturedBook";
-import Header from "./components/Header";
-import Loading from "./components/Loading";
-import NewsSection from "./components/NewsSection"; // ! we somehow have to use this component (maybe?)
-import Recommendations from "./components/Recommendations";
-import Sidebar from "./components/Sidebar";
-import Authors from "./pages/Authors";
-import Blog from "./pages/Blog";
-import Bookshelf from "./pages/Bookshelf";
-import axios from "axios";
+import { useEffect, useState } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import BookDetail from './components/BookDetail'
+import FeaturedBook from './components/FeaturedBook'
+import Header from './components/Header'
+import Loading from './components/Loading'
+import NewsSection from './components/NewsSection'
+import Recommendations from './components/Recommendations'
+import Sidebar from './components/Sidebar'
+import Authors from './pages/Authors'
+import Blog from './pages/Blog'
+import Bookshelf from './pages/Bookshelf'
+import Contact from './pages/Contact'; // Import the Contact page
+import { getFeaturedBooks, getNewsItems } from './services/dataService'
 
 function App() {
-  const [selectedGenre, setSelectedGenre] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [featuredBook, setFeaturedBook] = useState(null);
-  const [allBooks, setAllBooks] = useState([]);
-  const [books, setBooks] = useState([]);
-  const [newsItems, setNewsItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedBook, setSelectedBook] = useState(null);
-  const location = useLocation();
+  const [selectedGenre, setSelectedGenre] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [featuredBook, setFeaturedBook] = useState(null)
+  const [newsItems, setNewsItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [selectedBookId, setSelectedBookId] = useState(null)
+  const location = useLocation()
 
-  // Fetch new books on initial page render
   useEffect(() => {
-    const api_url = import.meta.env.VITE_API_URL || "http://localhost:8000";
-
+    // Fetch featured book and news items when the component mounts
     const fetchInitialData = async () => {
-      axios
-        .get(`${api_url}/api/reading-materials`)
-        .then((response) => {
-          const newBooks = response.data;
-          if (newBooks && newBooks.length > 0) {
-            setFeaturedBook(newBooks[0]);
-            setAllBooks(newBooks);
-            setBooks(newBooks);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching initial book data:", error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
+      try {
+        const featured = await getFeaturedBooks()
+        if (featured && featured.length > 0) {
+          setFeaturedBook(featured[0])
+        }
 
-    fetchInitialData();
-  }, []);
+        const news = await getNewsItems(3) // Get top 3 news
+        setNewsItems(news)
+      } catch (error) {
+        console.error('Error fetching initial data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  // Filter books when search query or genre changes
-  useEffect(() => {
-    if (allBooks.length === 0) return;
-
-    const filteredBooks = allBooks.filter((book) => {
-      // Apply genre filter if not "All"
-      const matchesGenre =
-        selectedGenre === "All" || book.categories?.includes(selectedGenre);
-
-      // Apply search filter if search query exists
-      const matchesSearch =
-        searchQuery === "" ||
-        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (book.author &&
-          book.author.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      return matchesGenre && matchesSearch;
-    });
-
-    setBooks(filteredBooks);
-  }, [searchQuery, selectedGenre, allBooks]);
+    fetchInitialData()
+  }, [])
 
   const handleGenreChange = (genre) => {
-    setSelectedGenre(genre);
-  };
+    setSelectedGenre(genre)
+  }
 
   const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
+    setSearchQuery(query)
+  }
 
-  const handleViewBookDetails = (book) => {
-    setSelectedBook(book);
-  };
+  const handleViewBookDetails = (bookId) => {
+    setSelectedBookId(bookId)
+  }
 
   const handleCloseBookDetails = () => {
-    setSelectedBook(null);
-  };
-
-  const handleRandomFeaturedBook = () => {
-    if (allBooks.length > 0) {
-      // Check if allBooks array is not empty
-      // Generate a random index
-      const randomIndex = Math.floor(Math.random() * allBooks.length);
-      // Get the random book from the array
-      const randomBook = allBooks[randomIndex];
-      // Lastly, set the featured book to that random picked book.
-      setFeaturedBook(randomBook);
-    }
-  };
+    setSelectedBookId(null)
+  }
 
   // Discover page component
   const DiscoverPage = () => (
@@ -106,17 +66,16 @@ function App() {
         {featuredBook && (
           <FeaturedBook
             book={featuredBook}
-            onViewDetails={() => handleViewBookDetails(featuredBook)}
-            onPickRandomBook={handleRandomFeaturedBook}
+            onViewDetails={() => handleViewBookDetails(featuredBook.id)}
           />
         )}
         <Recommendations
-          books={books}
           genre={selectedGenre}
           searchQuery={searchQuery}
           onViewDetails={handleViewBookDetails}
         />
       </div>
+      <NewsSection news={newsItems} />
     </>
   );
 
@@ -137,38 +96,30 @@ function App() {
           ) : (
             <Routes>
               <Route path="/" element={<DiscoverPage />} />
-              <Route
-                path="/bookshelf"
-                element={<Bookshelf onViewDetails={handleViewBookDetails} />}
-              />
-              <Route
-                path="/authors"
-                element={<Authors onViewDetails={handleViewBookDetails} />}
-              />
+              <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
+              <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
-              <Route
-                path="*"
-                element={
-                  <div className="page-not-found">
-                    <h2>Page Not Found</h2>
-                    <p>
-                      The page you're looking for doesn't exist or is still
-                      under development.
-                    </p>
-                  </div>
-                }
-              />
+              <Route path="/contact" element={<Contact />} /> {/* Add Contact route */}
+              <Route path="*" element={
+                <div className="page-not-found">
+                  <h2>Page Not Found</h2>
+                  <p>The page you're looking for doesn't exist or is still under development.</p>
+                </div>
+              } />
             </Routes>
           )}
         </div>
       </div>
 
       {/* Book detail modal */}
-      {selectedBook && (
-        <BookDetail book={selectedBook} onClose={handleCloseBookDetails} />
+      {selectedBookId && (
+        <BookDetail
+          bookId={selectedBookId}
+          onClose={handleCloseBookDetails}
+        />
       )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
