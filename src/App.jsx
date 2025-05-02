@@ -99,7 +99,7 @@ function App() {
               <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
               <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/review" element={<Review />} />
+              <Route path="/review/:bookId" element={<Review />} />
               <Route path="*" element={
                 <div className="page-not-found">
                   <h2>Page Not Found</h2>

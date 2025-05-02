@@ -1,28 +1,34 @@
 import { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { addReview, getBookById } from '../../services/dataService.js'
 import styles from './Review.module.css'
 import axios from 'axios'
 
-const reading_material = 2
-const reviewer_name = 'Zack'
-const rating = 5
+
 
 const Review = () => {
-  const [book, setBook] = useState(null)
-  const [reviewText, setReviewText] = useState('')
+    const { bookId } = useParams()
+    const navigate = useNavigate()
 
+    const [book, setBook] = useState(null)
+    const [reviewText, setReviewText] = useState('')
+    
+    const reading_material = bookId
+    const reviewer_name = 'user'
+    const rating = 5
   
-  useEffect(() => {
-    const fetchBook = async (id) => {
-      try {
-        const result = await getBookById(id)
-        setBook(result)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    fetchBook(reading_material)
-  }, [reading_material])
+    useEffect(() => {
+        if (!reading_material) return
+        const fetchBook = async () => {
+          try {
+            const result = await getBookById(reading_material)
+            setBook(result)
+          } catch (error) {
+            console.error(error)
+          }
+        }
+        fetchBook()
+      }, [reading_material])
 
 
   if (!book) return <p>Loading book...</p>

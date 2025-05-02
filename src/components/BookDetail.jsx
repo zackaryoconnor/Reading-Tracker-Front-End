@@ -3,6 +3,7 @@ import { getAuthorById, getBookById, getReviewsForBook } from '../services/dataS
 import './BookDetail.css'
 import Loading from './Loading'
 import ReadingStatus from './ReadingStatus'
+import AddReviewButton from './AddReviewButton.jsx'
 
 const BookDetail = ({ bookId, onClose }) => {
   const [book, setBook] = useState(null)
@@ -144,7 +145,8 @@ const BookDetail = ({ bookId, onClose }) => {
 
           <div className="reviews-section">
             <h3>Reviews ({reviews.length})</h3>
-
+            <AddReviewButton bookId={ bookId }/>
+            {console.log('bookId:', bookId)}
             {reviews.length === 0 ? (
               <div className="no-reviews">No reviews yet. Be the first to review!</div>
             ) : (
