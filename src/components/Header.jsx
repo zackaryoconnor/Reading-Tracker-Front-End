@@ -165,14 +165,6 @@ const Header = ({ onGenreChange, onSearch }) => {
 
       <div className="search-container">
         <SearchBar onSearch={handleSearch} />
-        <div className="user-profile">
-          <div className="notifications">
-            <i className="notification-icon">🔔</i>
-          </div>
-          <div className="avatar">
-            <img src="https://via.placeholder.com/40" alt="User" />
-          </div>
-        </div>
       </div>
     </header>
   )

@@ -1,49 +1,7 @@
-import { useEffect, useState } from 'react'
-import { getAuthorById, getBookById, getReviewsForBook } from '../services/dataService'
 import './BookDetail.css'
 import Loading from './Loading'
-import ReadingStatus from './ReadingStatus'
 
-const BookDetail = ({ bookId, onClose }) => {
-  const [book, setBook] = useState(null)
-  const [author, setAuthor] = useState(null)
-  const [reviews, setReviews] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchBookDetails = async () => {
-      setLoading(true)
-      try {
-        // Fetch book data
-        const bookData = await getBookById(bookId)
-        setBook(bookData)
-
-        // Fetch author data
-        const authorData = await getAuthorById(bookData.author)
-        setAuthor(authorData)
-
-        // Fetch reviews
-        const reviewsData = await getReviewsForBook(bookId)
-        setReviews(reviewsData)
-
-        setError(null)
-      } catch (err) {
-        console.error('Error fetching book details:', err)
-        setError('Failed to load book details. Please try again later.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchBookDetails()
-  }, [bookId])
-
-  const handleReadingStatusUpdate = (status, progress) => {
-    // In a real app, you might want to update the global state or refetch data
-    console.log(`Updated reading status: ${status}, progress: ${progress}`)
-  }
-
+const BookDetail = ({ loading = false, book = {}, onClose }) => {
   if (loading) {
     return (
       <div className="book-detail-modal">
@@ -52,19 +10,6 @@ const BookDetail = ({ bookId, onClose }) => {
             <button className="close-btn" onClick={onClose}>✕</button>
           </div>
           <Loading size="large" text="Loading book details..." />
-        </div>
-      </div>
-    )
-  }
-
-  if (error || !book) {
-    return (
-      <div className="book-detail-modal">
-        <div className="book-detail-container">
-          <div className="book-detail-header">
-            <button className="close-btn" onClick={onClose}>✕</button>
-          </div>
-          <div className="error-message">{error || 'Book not found'}</div>
         </div>
       </div>
     )
@@ -95,7 +40,7 @@ const BookDetail = ({ bookId, onClose }) => {
                 <h3 className="book-author">by {book.authorName}</h3>
 
                 <div className="book-categories-list">
-                  {book.categories.map((category, index) => (
+                  {book.categories?.map((category, index) => (
                     <span key={index} className="category-badge">
                       {category}
                     </span>
@@ -119,17 +64,10 @@ const BookDetail = ({ bookId, onClose }) => {
                 <h3>Description</h3>
                 <p>{book.description}</p>
               </div>
-
-              <ReadingStatus
-                bookId={book.id}
-                initialStatus={book.readingStatus}
-                initialProgress={0}
-                onUpdate={handleReadingStatusUpdate}
-              />
             </div>
           </div>
 
-          {author && (
+          {book.author && (
             <div className="author-section">
               <h3>About the Author</h3>
               <div className="author-info">
@@ -143,25 +81,25 @@ const BookDetail = ({ bookId, onClose }) => {
           )}
 
           <div className="reviews-section">
-            <h3>Reviews ({reviews.length})</h3>
+            <h3>Reviews ({book.reviews?.length || "0"})</h3>
 
-            {reviews.length === 0 ? (
+            {book.reviews?.length === 0 ? (
               <div className="no-reviews">No reviews yet. Be the first to review!</div>
             ) : (
               <div className="reviews-list">
-                {reviews.map((review) => (
+                {book.reviews?.map((review) => (
                   <div key={review.id} className="review-item">
                     <div className="review-header">
                       <div className="reviewer-info">
-                        <div className="reviewer-name">{review.userName}</div>
-                        <div className="review-date">{new Date(review.date).toLocaleDateString()}</div>
+                        <div className="reviewer-name">{review.reviewer_name}</div>
+                        <div className="review-date">{new Date(review.created_at).toLocaleDateString()}</div>
                       </div>
                       <div className="review-rating">
                         {'★'.repeat(review.rating)}
                         {'☆'.repeat(5 - review.rating)}
                       </div>
                     </div>
-                    <div className="review-content">{review.content}</div>
+                    <div className="review-content">{review.comment}</div>
                   </div>
                 ))}
               </div>
