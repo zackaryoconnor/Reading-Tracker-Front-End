@@ -1,12 +1,14 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import styles from './AddReviewButton.module.css'
+import styles from './EditReviewButton.module.css'
 
-export default function AddReviewButton({ bookId, onClose, ...props }) {
+
+
+export default function EditReviewButton({ bookId, content, onClose, ...props }) {
   const navigate = useNavigate()
 
   if (!bookId) {
-    console.warn('AddReviewButton: bookId is required.')
+    console.warn('EditReviewButton: bookId is required.')
     return null
   }
 
@@ -14,20 +16,19 @@ export default function AddReviewButton({ bookId, onClose, ...props }) {
 
   const handleClick = (event) => {
     onClose?.()
-    navigate(path)
+    navigate(path, { state: { initialComment: content } })
     props.onClick?.(event)
   }
   
   return (
     <button
-    className={ styles.addReviewButton }  
+    className={ styles.editReviewButton }
     type="button"
-    onClick={() => navigate(path)}
+    onClick={ handleClick }
     {...props}
       
-      
     >
-      Add a review +
+      Edit review
     </button>
   )
 }

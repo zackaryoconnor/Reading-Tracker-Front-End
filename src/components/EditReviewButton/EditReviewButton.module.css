@@ -1,0 +1,10 @@
+.editReviewButton {
+    background-color: var(--secondary);
+    border: 1px solid var(--primary-color);
+    color: var(--text-gray);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+  

@@ -4,6 +4,7 @@ import './BookDetail.css'
 import Loading from './Loading'
 import ReadingStatus from './ReadingStatus'
 import AddReviewButton from './AddReviewButton/AddReviewButton.jsx'
+import EditReviewButton from './EditReviewButton/EditReviewButton.jsx'
 
 const BookDetail = ({ bookId, onClose }) => {
   const [book, setBook] = useState(null)
@@ -164,6 +165,8 @@ const BookDetail = ({ bookId, onClose }) => {
                       </div>
                     </div>
                     <div className="review-content">{review.content}</div>
+                    <EditReviewButton bookId={ bookId } content={ review.content }/>
+                    {console.log(bookId, book.content)}
                   </div>
                 ))}
               </div>

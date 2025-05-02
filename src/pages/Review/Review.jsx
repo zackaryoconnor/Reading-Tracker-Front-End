@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { addReview, getBookById } from '../../services/dataService.js'
 import styles from './Review.module.css'
 import axios from 'axios'
@@ -9,9 +9,12 @@ import axios from 'axios'
 const Review = () => {
     const { bookId } = useParams()
     const navigate = useNavigate()
+    const { state } = useLocation()
+    
+    const initialText = state?.initialComment || ''
 
     const [book, setBook] = useState(null)
-    const [reviewText, setReviewText] = useState('')
+    const [reviewText, setReviewText] = useState(initialText)
     
     const reading_material = bookId
     const reviewer_name = 'user'
@@ -24,7 +27,7 @@ const Review = () => {
             const result = await getBookById(reading_material)
             setBook(result)
           } catch (error) {
-            console.error(error)
+            console.error('Add Review', error)
           }
         }
         fetchBook()
@@ -44,16 +47,16 @@ const Review = () => {
       comment: reviewText,
     }
 
-    console.log('Submitting review:', newReview)
+    console.log('Add Review Submitting review:', newReview)
 
     try {
       const response = await axios.post('http://100.24.54.166:8000/api/reviews/', newReview)
       console.log('Review submitted successfully:', response.data)
       setReviewText('')
     } catch (error) {
-        console.error('Status:', error.response.status)
-        console.error('newReview sent:', newReview)
-        console.error('Validation errors:', error.response.data)
+        console.error('Add Review Status:', error.response.status)
+        console.error('Add Review newReview sent:', newReview)
+        console.error('Add Review Validation errors:', error.response.data)
     }
   }
 
@@ -90,7 +93,7 @@ const Review = () => {
           className={styles.submitButton}
           onClick={() => {
             handleSubmit()
-            console.log(reviewText)
+            console.log('Add Review', reviewText)
           }}>
           Submit Review
         </button>
