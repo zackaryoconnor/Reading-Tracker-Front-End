@@ -25,7 +25,7 @@ const Header = ({ onGenreChange, onSearch }) => {
         try {
           const categoriesData = await getAllCategories()
           if (categoriesData && categoriesData.length > 0) {
-            setGenres(categoriesData.map(cat => cat.name))
+            setGenres(categoriesData.map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)));
           }
         } catch (error) {
           console.error('Error fetching categories:', error)
@@ -111,9 +111,9 @@ const Header = ({ onGenreChange, onSearch }) => {
 
             {showGenreDropdown && (
               <div className="genre-dropdown">
-                {genres.map((genre) => (
+                {genres.map((genre, index) => (
                   <div
-                    key={genre}
+                    key={index}
                     className="genre-item"
                     onClick={() => handleGenreSelect(genre)}
                   >

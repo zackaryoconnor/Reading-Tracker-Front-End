@@ -105,7 +105,7 @@ export const getAllCategories = async () => {
       if (item.categories && Array.isArray(item.categories)) {
         // For each category, normalize to uppercase and add to the Set
         item.categories.forEach(category => {
-          categoriesSet.add(category.toUpperCase());
+          categoriesSet.add(category.toLowerCase());
         });
       }
     });
