@@ -11,15 +11,16 @@ import Authors from './pages/Authors'
 import Blog from './pages/Blog'
 import Bookshelf from './pages/Bookshelf'
 import Contact from './pages/Contact'; // Import the Contact page
-import { getFeaturedBooks, getNewsItems } from './services/dataService'
+import { getFeaturedBooks, getRecommendedBooks, getNewsItems } from './services/dataService'
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [featuredBook, setFeaturedBook] = useState(null)
+  const [recommendedBooks, setRecommendedBooks] = useState(null)
   const [newsItems, setNewsItems] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedBookId, setSelectedBookId] = useState(null)
+  const [selectedBook, setSelectedBook] = useState(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -33,6 +34,10 @@ function App() {
 
         const news = await getNewsItems(3) // Get top 3 news
         setNewsItems(news)
+
+        // Also update the recommended books list;
+        setRecommendedBooks(await getRecommendedBooks())
+
       } catch (error) {
         console.error('Error fetching initial data:', error)
       } finally {
@@ -51,12 +56,12 @@ function App() {
     setSearchQuery(query)
   }
 
-  const handleViewBookDetails = (bookId) => {
-    setSelectedBookId(bookId)
+  const handleViewBookDetails = (book) => {
+    setSelectedBook(book)
   }
 
   const handleCloseBookDetails = () => {
-    setSelectedBookId(null)
+    setSelectedBook(null)
   }
 
   // Discover page component
@@ -66,10 +71,11 @@ function App() {
         {featuredBook && (
           <FeaturedBook
             book={featuredBook}
-            onViewDetails={() => handleViewBookDetails(featuredBook.id)}
+            onViewDetails={() => handleViewBookDetails(featuredBook)}
           />
         )}
         <Recommendations
+          books={recommendedBooks}
           genre={selectedGenre}
           searchQuery={searchQuery}
           onViewDetails={handleViewBookDetails}
@@ -112,9 +118,9 @@ function App() {
       </div>
 
       {/* Book detail modal */}
-      {selectedBookId && (
+      {selectedBook && (
         <BookDetail
-          bookId={selectedBookId}
+          book={selectedBook}
           onClose={handleCloseBookDetails}
         />
       )}
