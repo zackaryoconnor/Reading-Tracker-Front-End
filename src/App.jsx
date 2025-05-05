@@ -1,23 +1,25 @@
-import { useEffect, useState } from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
-import BookDetail from './components/BookDetail'
-import FeaturedBook from './components/FeaturedBook'
-import Header from './components/Header'
-import Loading from './components/Loading'
-import NewsSection from './components/NewsSection'
-import Recommendations from './components/Recommendations'
-import Sidebar from './components/Sidebar'
-import Authors from './pages/Authors'
-import Blog from './pages/Blog'
-import Bookshelf from './pages/Bookshelf'
-import Contact from './pages/Contact'; // Import the Contact page
-import { getFeaturedBooks, getRecommendedBooks, getNewsItems } from './services/dataService'
+import React, { lazy, useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { getFeaturedBooks, getNewsItems, getRecommendedBooks } from './services/dataService';
+
+const BookDetail = lazy(() => import('./components/BookDetail'));
+const FeaturedBook = lazy(() => import('./components/FeaturedBook'));
+const Header = lazy(() => import('./components/Header'));
+const Loading = lazy(() => import('./components/Loading'));
+const NewsSection = lazy(() => import('./components/NewsSection'));
+const Recommendations = lazy(() => import('./components/Recommendations'));
+const Sidebar = lazy(() => import('./components/Sidebar'));
+const Authors = lazy(() => import('./pages/Authors'));
+const Blog = lazy(() => import('./pages/Blog'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Bookshelf = lazy(() => import('./pages/Bookshelf'));
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [featuredBook, setFeaturedBook] = useState(null)
-  const [recommendedBooks, setRecommendedBooks] = useState(null)
+  const [recommendedBooks, setRecommendedBooks] = useState([])
+  const [filteredBooks, setFilteredBooks] = useState([])
   const [newsItems, setNewsItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedBook, setSelectedBook] = useState(null)
@@ -35,8 +37,10 @@ function App() {
         const news = await getNewsItems(3) // Get top 3 news
         setNewsItems(news)
 
+        const books = await getRecommendedBooks();
         // Also update the recommended books list;
-        setRecommendedBooks(await getRecommendedBooks())
+        setRecommendedBooks(books)
+        setFilteredBooks(books)
 
       } catch (error) {
         console.error('Error fetching initial data:', error)
@@ -47,6 +51,13 @@ function App() {
 
     fetchInitialData()
   }, [])
+
+  useEffect(() => {
+    console.log(selectedGenre, "selectedGenre")
+    const filteredBooks = selectedGenre === ("All" || "Non-Fiction") ? recommendedBooks : recommendedBooks?.filter(book => book?.categories.includes(selectedGenre))
+    setFilteredBooks(filteredBooks)
+
+  }, [selectedGenre])
 
   const handleGenreChange = (genre) => {
     setSelectedGenre(genre)
@@ -75,7 +86,7 @@ function App() {
           />
         )}
         <Recommendations
-          books={recommendedBooks}
+          books={filteredBooks}
           genre={selectedGenre}
           searchQuery={searchQuery}
           onViewDetails={handleViewBookDetails}

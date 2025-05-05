@@ -1,3 +1,4 @@
+import React from "react";
 import BookCard from "./BookCard";
 import "./Recommendations.css";
 
@@ -8,7 +9,6 @@ const Recommendations = ({
   searchQuery,
   onViewDetails,
 }) => {
-
   const handleViewDetails = (book) => {
     if (onViewDetails) {
       onViewDetails(book);
@@ -30,8 +30,8 @@ const Recommendations = ({
           {searchQuery
             ? `Search Results for "${searchQuery}"`
             : genre !== "All"
-            ? `${genre} Books`
-            : "Recommended For You"}
+              ? `${genre} Books`
+              : "Recommended For You"}
         </h2>
 
         <a href="/bookshelf" className="view-all">
@@ -49,7 +49,7 @@ const Recommendations = ({
         </div>
       ) : (
         <div className="books-grid">
-          {books.map((book) => (
+          {books?.map((book) => (
             <BookCard
               key={book.id}
               book={book}
