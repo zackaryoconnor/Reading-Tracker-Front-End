@@ -9,7 +9,6 @@ const Loading = lazy(() => import('./components/Loading'));
 const NewsSection = lazy(() => import('./components/NewsSection'));
 const Recommendations = lazy(() => import('./components/Recommendations'));
 const Sidebar = lazy(() => import('./components/Sidebar'));
-const Authors = lazy(() => import('./pages/Authors'));
 const Blog = lazy(() => import('./pages/Blog'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Bookshelf = lazy(() => import('./pages/Bookshelf'));
@@ -129,7 +128,6 @@ function App() {
             <Routes>
               <Route path="/" element={<DiscoverPage />} />
               <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
-              <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={
