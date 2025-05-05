@@ -11,7 +11,8 @@ import Authors from './pages/Authors'
 import Blog from './pages/Blog'
 import Bookshelf from './pages/Bookshelf'
 import Contact from './pages/Contact'; // Import the Contact page
-import { getFeaturedBooks, getRecommendedBooks, getNewsItems } from './services/dataService'
+
+import { getFeaturedBooks, getNewsItems, getRecommendedBooks } from './services/dataService'
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')

@@ -5,10 +5,11 @@ import './FeaturedBook.css'
 const FeaturedBook = ({ book, onViewDetails }) => {
   const [isReading, setIsReading] = useState(false)
 
-
   const featuredBookIds = [1, 2, 3, 4];
 
   const handleReadNow = async () => {
+    if (!book) return;
+
     try {
       await updateReadingStatus(book.id, 'reading', 0)
       setIsReading(true)
@@ -21,10 +22,11 @@ const FeaturedBook = ({ book, onViewDetails }) => {
   }
 
   const handleViewDetails = () => {
-    if (onViewDetails) {
+    if (onViewDetails && book) {
       onViewDetails(book.id)
     }
   }
+
   const pickRandomBook = () => {
     const randomIndex = Math.floor(Math.random() * featuredBookIds.length);
     const randomBookId = featuredBookIds[randomIndex];
@@ -33,6 +35,17 @@ const FeaturedBook = ({ book, onViewDetails }) => {
       onViewDetails(randomBookId);
     }
   };
+
+  // Guard clause when book isn't loaded yet
+  if (!book) {
+    return (
+      <div className="featured-book loading-state">
+        <div className="featured-content">
+          <h1 className="featured-title">Loading featured book...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="featured-book">
@@ -47,12 +60,16 @@ const FeaturedBook = ({ book, onViewDetails }) => {
           </div>
 
           <div className="featured-genres">
-            {book.categories.map((genre, index) => (
-              <span key={index} className="genre-tag">
-                {genre}
-                {index < book.categories.length - 1 && " • "}
-              </span>
-            ))}
+            {book.categories && book.categories.length > 0 ? (
+              book.categories.map((genre, index) => (
+                <span key={index} className="genre-tag">
+                  {genre}
+                  {index < book.categories.length - 1 && " • "}
+                </span>
+              ))
+            ) : (
+              <span className="genre-tag">No categories available</span>
+            )}
           </div>
         </div>
 

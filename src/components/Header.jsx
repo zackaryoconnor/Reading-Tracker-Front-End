@@ -24,8 +24,19 @@ const Header = ({ onGenreChange, onSearch }) => {
       const fetchCategories = async () => {
         try {
           const categoriesData = await getAllCategories()
-          if (categoriesData && categoriesData.length > 0) {
-            setGenres(categoriesData.map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)));
+          if (categoriesData && Array.isArray(categoriesData) && categoriesData.length > 0) {
+            // Make sure each category is a string before using charAt
+            setGenres(categoriesData.map(cat => {
+              if (typeof cat === 'string') {
+                return cat.charAt(0).toUpperCase() + cat.slice(1);
+              } else if (cat && typeof cat.name === 'string') {
+                // If it's an object with a name property
+                return cat.name.charAt(0).toUpperCase() + cat.name.slice(1);
+              } else {
+                // Fallback for other cases
+                return String(cat);
+              }
+            }));
           }
         } catch (error) {
           console.error('Error fetching categories:', error)

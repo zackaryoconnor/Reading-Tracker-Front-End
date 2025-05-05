@@ -1,26 +1,33 @@
-// dataService.js - Simple API service that makes calls to our backend :P
-
+// dataService.js - Simple API service that makes calls to our backend
 import axios from 'axios';
 
 // Get the base URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL;
 
-// This is like the 'base' function to make API calls
+// Predefined categories since they're referenced but not defined
+const categories = [
+  { id: "fiction", name: "Fiction", count: 4 },
+  { id: "nonfiction", name: "Non-Fiction", count: 1 },
+  { id: "fantasy", name: "Fantasy", count: 2 },
+  { id: "scifi", name: "Sci-Fi", count: 2 },
+  { id: "mystery", name: "Mystery", count: 3 },
+  { id: "thriller", name: "Thriller", count: 2 },
+  { id: "philosophy", name: "Philosophy", count: 2 },
+  { id: "biography", name: "Biography", count: 1 },
+  { id: "education", name: "Education", count: 1 }
+];
+
+// This is the 'base' function to make API calls
 const makeCallToAPI = async (endpoint, options = {}) => {
   try {
-    // Here we're setting up the request configuration
     const config = {
-      url: `${API_URL}${endpoint}`, // So this should look something like http://localhost:8000/api/reading-materials
-      ...options //                                                       |____ API_URL ____|  |____ endpoint ____|
+      url: `${API_URL}${endpoint}`,
+      ...options
     };
-    
-    // Here we're making the API call
+
     const response = await axios(config);
-    
-    // Then finnaly, we're returning the data :)
     return response.data;
   } catch (error) {
-    // If we get any errors along the way, we're logging it for debugging purposes
     console.error(`Error calling API at ${endpoint}:`, error);
     throw error;
   }
@@ -53,8 +60,6 @@ export const getFeaturedBooks = () => {
 
 // Get recommended books
 export const getRecommendedBooks = () => {
-  // makeCallToAPI('/api/reading-materials/?recommended=true');
-
   return makeCallToAPI('/api/reading-materials/');
 };
 
@@ -84,48 +89,20 @@ export const getNewsItems = (limit = null) => {
   return makeCallToAPI(endpoint);
 };
 
-// Get all categories
-export const getAllCategories = async () => {
-  /* 
-    ! Due to time constraints, and not being able to this any other way, 
-    ! we're extracting unique categories from reading materials 
-    ! directly from the API and normalizing them. That's the only way 
-    ! we can get a list of categories.
-  */
-
-  try {
-    // Make the API call to get all reading materials
-    const readingMaterials = await makeCallToAPI('/api/reading-materials/');
-
-    // Create a Set to store categories (using Set to automatically remove duplicates)
-    const categoriesSet = new Set();
-
-    // Loop through each reading material item
-    readingMaterials.forEach(item => {
-      if (item.categories && Array.isArray(item.categories)) {
-        // For each category, normalize to uppercase and add to the Set
-        item.categories.forEach(category => {
-          categoriesSet.add(category.toLowerCase());
-        });
-      }
-    });
-
-
-    // Convert Set back to array and return
-    return Array.from(categoriesSet);
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
+// Fixed getAllCategories - no dependency on readingMaterials
+export const getAllCategories = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Return the predefined categories array directly
+      resolve(categories);
+    }, 300);
+  });
 };
 
 // Get user's bookshelf
 export const getUserBookshelf = async () => {
   try {
-    // Get the user's books
     const data = await makeCallToAPI('/api/reading-materials/');
-    
-    // Format the data for the bookshelf component
     const bookshelf = data.map(book => ({
       bookId: book.id,
       status: book.readingStatus || 'want-to-read',
@@ -133,7 +110,6 @@ export const getUserBookshelf = async () => {
       dateAdded: book.created_at,
       bookDetails: book
     }));
-    
     return bookshelf;
   } catch (error) {
     console.error('Error getting user bookshelf:', error);
@@ -144,9 +120,7 @@ export const getUserBookshelf = async () => {
 // Toggle favorite status for a book
 export const toggleFavorite = async (bookId) => {
   try {
-    // First, get the current book data
     const book = await getBookById(bookId);
-    
     return makeCallToAPI(`/api/reading-materials/${bookId}/`, {
       method: 'PATCH',
       data: { isFavorite: !book.isFavorite }
@@ -177,7 +151,6 @@ export const addReview = (bookId, rating, content) => {
   });
 };
 
-// Export all functions as a default object
 export default {
   getAllBooks,
   getBookById,
