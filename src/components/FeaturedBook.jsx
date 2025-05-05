@@ -47,7 +47,7 @@ const FeaturedBook = ({ book, onViewDetails }) => {
           </div>
 
           <div className="featured-genres">
-            {book.categories.map((genre, index) => (
+            {book?.categories?.map((genre, index) => (
               <span key={index} className="genre-tag">
                 {genre}
                 {index < book.categories.length - 1 && " • "}
