@@ -44,6 +44,12 @@ const Bookshelf = ({ onViewDetails }) => {
     return new Date(dateString).toLocaleDateString()
   }
 
+  // Function to handle view button clicks - it passes the book details to App's handler
+  const handleViewBook = (book) => {
+    // Pass the full book object to onViewDetails
+    onViewDetails(book.bookDetails)
+  }
+
   return (
     <div className="bookshelf-page">
       <div className="bookshelf-header">
@@ -54,24 +60,6 @@ const Bookshelf = ({ onViewDetails }) => {
             onClick={() => setActiveTab('all')}
           >
             All Books
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'reading' ? 'active' : ''}`}
-            onClick={() => setActiveTab('reading')}
-          >
-            Currently Reading
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'want-to-read' ? 'active' : ''}`}
-            onClick={() => setActiveTab('want-to-read')}
-          >
-            Want to Read
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`}
-            onClick={() => setActiveTab('read')}
-          >
-            Completed
           </button>
         </div>
       </div>
@@ -118,12 +106,12 @@ const Bookshelf = ({ onViewDetails }) => {
                       src={item.bookDetails.coverImage}
                       alt={item.bookDetails.title}
                       className="book-thumbnail"
-                      onClick={() => onViewDetails(item.bookId)}
+                      onClick={() => handleViewBook(item)}
                     />
                     <div className="book-title-info">
                       <div
                         className="book-title"
-                        onClick={() => onViewDetails(item.bookId)}
+                        onClick={() => handleViewBook(item)}
                       >
                         {item.bookDetails.title}
                       </div>
@@ -172,7 +160,7 @@ const Bookshelf = ({ onViewDetails }) => {
                 <div className="table-cell actions-cell">
                   <button
                     className="action-btn view-btn"
-                    onClick={() => onViewDetails(item.bookId)}
+                    onClick={() => handleViewBook(item)}
                   >
                     View
                   </button>

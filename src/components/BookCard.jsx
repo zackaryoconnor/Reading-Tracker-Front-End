@@ -40,14 +40,6 @@ const BookCard = ({ book, onViewDetails }) => {
 
       <div className="book-info">
         <h3 className="book-title">{book.title}</h3>
-        <p className="book-author">{book.authorName}</p>
-        <div className="book-categories">
-          {(book.categories || ["Unknown_Genre"]).map((category, index) => (
-            <span key={index} className="book-category">
-              {category}{index < (book.categories || ["Unknown_Genre"]).length - 1 && ', '}
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   )

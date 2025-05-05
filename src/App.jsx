@@ -1,25 +1,28 @@
-import { useEffect, useState } from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
-import BookDetail from './components/BookDetail'
-import FeaturedBook from './components/FeaturedBook'
-import Header from './components/Header'
-import Loading from './components/Loading'
-import NewsSection from './components/NewsSection'
-import Recommendations from './components/Recommendations'
-import Sidebar from './components/Sidebar'
-import Authors from './pages/Authors'
-import Blog from './pages/Blog'
-import Bookshelf from './pages/Bookshelf'
-import Contact from './pages/Contact'; // Import the Contact page
-import { getFeaturedBooks, getNewsItems } from './services/dataService'
+import React, { lazy, useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { getFeaturedBooks, getNewsItems, getRecommendedBooks } from './services/dataService';
+
+const BookDetail = lazy(() => import('./components/BookDetail'));
+const FeaturedBook = lazy(() => import('./components/FeaturedBook'));
+const Header = lazy(() => import('./components/Header'));
+const Loading = lazy(() => import('./components/Loading'));
+const NewsSection = lazy(() => import('./components/NewsSection'));
+const Recommendations = lazy(() => import('./components/Recommendations'));
+const Sidebar = lazy(() => import('./components/Sidebar'));
+const Authors = lazy(() => import('./pages/Authors'));
+const Blog = lazy(() => import('./pages/Blog'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Bookshelf = lazy(() => import('./pages/Bookshelf'));
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [featuredBook, setFeaturedBook] = useState(null)
+  const [recommendedBooks, setRecommendedBooks] = useState([])
+  const [filteredBooks, setFilteredBooks] = useState([])
   const [newsItems, setNewsItems] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedBookId, setSelectedBookId] = useState(null)
+  const [selectedBook, setSelectedBook] = useState(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -33,6 +36,12 @@ function App() {
 
         const news = await getNewsItems(3) // Get top 3 news
         setNewsItems(news)
+
+        const books = await getRecommendedBooks();
+        // Also update the recommended books list;
+        setRecommendedBooks(books)
+        setFilteredBooks(books)
+
       } catch (error) {
         console.error('Error fetching initial data:', error)
       } finally {
@@ -43,6 +52,28 @@ function App() {
     fetchInitialData()
   }, [])
 
+  // Modified useEffect to avoid depending on recommendedBooks (which could cause infinite loops)
+  useEffect(() => {
+    if (recommendedBooks.length > 0) {
+      // First filter by genre
+      let filtered = selectedGenre === "All" || selectedGenre === "Non-Fiction"
+        ? [...recommendedBooks]
+        : recommendedBooks.filter(book => book?.categories?.includes(selectedGenre));
+
+      // Then filter by search query if there is one
+      if (searchQuery && searchQuery.trim() !== '') {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(book =>
+          (book?.title && book.title.toLowerCase().includes(query)) ||
+          (book?.author && book.author.toLowerCase().includes(query)) ||
+          (book?.description && book.description.toLowerCase().includes(query))
+        );
+      }
+
+      setFilteredBooks(filtered);
+    }
+  }, [selectedGenre, searchQuery]) // Remove recommendedBooks dependency
+
   const handleGenreChange = (genre) => {
     setSelectedGenre(genre)
   }
@@ -51,12 +82,12 @@ function App() {
     setSearchQuery(query)
   }
 
-  const handleViewBookDetails = (bookId) => {
-    setSelectedBookId(bookId)
+  const handleViewBookDetails = (book) => {
+    setSelectedBook(book)
   }
 
   const handleCloseBookDetails = () => {
-    setSelectedBookId(null)
+    setSelectedBook(null)
   }
 
   // Discover page component
@@ -66,10 +97,11 @@ function App() {
         {featuredBook && (
           <FeaturedBook
             book={featuredBook}
-            onViewDetails={() => handleViewBookDetails(featuredBook.id)}
+            onViewDetails={() => handleViewBookDetails(featuredBook)}
           />
         )}
         <Recommendations
+          books={filteredBooks}
           genre={selectedGenre}
           searchQuery={searchQuery}
           onViewDetails={handleViewBookDetails}
@@ -99,7 +131,7 @@ function App() {
               <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
               <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/contact" element={<Contact />} /> {/* Add Contact route */}
+              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={
                 <div className="page-not-found">
                   <h2>Page Not Found</h2>
@@ -112,9 +144,9 @@ function App() {
       </div>
 
       {/* Book detail modal */}
-      {selectedBookId && (
+      {selectedBook && (
         <BookDetail
-          bookId={selectedBookId}
+          book={selectedBook}
           onClose={handleCloseBookDetails}
         />
       )}
