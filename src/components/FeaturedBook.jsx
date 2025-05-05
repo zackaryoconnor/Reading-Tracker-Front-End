@@ -34,6 +34,7 @@ const FeaturedBook = ({ book, onViewDetails }) => {
     }
   };
 
+
   return (
     <div className="featured-book">
       <div className="featured-backdrop" style={{ backgroundImage: `url(${book.coverImage})` }}></div>
@@ -78,10 +79,6 @@ const FeaturedBook = ({ book, onViewDetails }) => {
           >
             Pick a Story for Me!
           </button>
-          <div className="navigation-controls">
-            <button className="nav-btn prev">❮</button>
-            <button className="nav-btn next">❯</button>
-          </div>
         </div>
       </div>
     </div>
