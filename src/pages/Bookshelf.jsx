@@ -61,24 +61,6 @@ const Bookshelf = ({ onViewDetails }) => {
           >
             All Books
           </button>
-          <button
-            className={`tab-btn ${activeTab === 'reading' ? 'active' : ''}`}
-            onClick={() => setActiveTab('reading')}
-          >
-            Currently Reading
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'want-to-read' ? 'active' : ''}`}
-            onClick={() => setActiveTab('want-to-read')}
-          >
-            Want to Read
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`}
-            onClick={() => setActiveTab('read')}
-          >
-            Completed
-          </button>
         </div>
       </div>
 
