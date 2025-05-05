@@ -52,12 +52,27 @@ function App() {
     fetchInitialData()
   }, [])
 
+  // Modified useEffect to avoid depending on recommendedBooks (which could cause infinite loops)
   useEffect(() => {
-    console.log(selectedGenre, "selectedGenre")
-    const filteredBooks = selectedGenre === ("All" || "Non-Fiction") ? recommendedBooks : recommendedBooks?.filter(book => book?.categories.includes(selectedGenre))
-    setFilteredBooks(filteredBooks)
+    if (recommendedBooks.length > 0) {
+      // First filter by genre
+      let filtered = selectedGenre === "All" || selectedGenre === "Non-Fiction"
+        ? [...recommendedBooks]
+        : recommendedBooks.filter(book => book?.categories?.includes(selectedGenre));
 
-  }, [selectedGenre])
+      // Then filter by search query if there is one
+      if (searchQuery && searchQuery.trim() !== '') {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(book =>
+          (book?.title && book.title.toLowerCase().includes(query)) ||
+          (book?.author && book.author.toLowerCase().includes(query)) ||
+          (book?.description && book.description.toLowerCase().includes(query))
+        );
+      }
+
+      setFilteredBooks(filtered);
+    }
+  }, [selectedGenre, searchQuery]) // Remove recommendedBooks dependency
 
   const handleGenreChange = (genre) => {
     setSelectedGenre(genre)
@@ -116,7 +131,7 @@ function App() {
               <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
               <Route path="/authors" element={<Authors onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/contact" element={<Contact />} /> {/* Add Contact route */}
+              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={
                 <div className="page-not-found">
                   <h2>Page Not Found</h2>
