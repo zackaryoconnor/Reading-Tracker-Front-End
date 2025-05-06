@@ -1,0 +1,6 @@
+.addReviewButton {
+  background-color: var(--primary-color);
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}

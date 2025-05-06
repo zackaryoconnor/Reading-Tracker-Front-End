@@ -1,17 +1,24 @@
-import React, { lazy, useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { getFeaturedBooks, getNewsItems, getRecommendedBooks } from './services/dataService';
+import React, { lazy, useEffect, useState } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import {
+  getFeaturedBooks,
+  getNewsItems,
+  getRecommendedBooks,
+} from './services/dataService'
+import Review from './pages/Review/Review'
 
-const BookDetail = lazy(() => import('./components/BookDetail'));
-const FeaturedBook = lazy(() => import('./components/FeaturedBook'));
-const Header = lazy(() => import('./components/Header'));
-const Loading = lazy(() => import('./components/Loading'));
-const NewsSection = lazy(() => import('./components/NewsSection'));
-const Recommendations = lazy(() => import('./components/Recommendations'));
-const Sidebar = lazy(() => import('./components/Sidebar'));
-const Blog = lazy(() => import('./pages/Blog'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Bookshelf = lazy(() => import('./pages/Bookshelf'));
+const BookDetail = lazy(() => import('./Components/BookDetail'))
+const FeaturedBook = lazy(() => import('./components/FeaturedBook'))
+const Header = lazy(() => import('./components/Header'))
+const Loading = lazy(() => import('./Components/Loading'))
+const NewsSection = lazy(() => import('./components/NewsSection'))
+const Recommendations = lazy(() => import('./components/Recommendations'))
+const Sidebar = lazy(() => import('./components/Sidebar'))
+const Authors = lazy(() => import('./pages/Authors'))
+const Blog = lazy(() => import('./pages/Blog'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Bookshelf = lazy(() => import('./pages/Bookshelf'))
+
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')
@@ -36,11 +43,10 @@ function App() {
         const news = await getNewsItems(3) // Get top 3 news
         setNewsItems(news)
 
-        const books = await getRecommendedBooks();
+        const books = await getRecommendedBooks()
         // Also update the recommended books list;
         setRecommendedBooks(books)
         setFilteredBooks(books)
-
       } catch (error) {
         console.error('Error fetching initial data:', error)
       } finally {
@@ -55,21 +61,26 @@ function App() {
   useEffect(() => {
     if (recommendedBooks.length > 0) {
       // First filter by genre
-      let filtered = selectedGenre === "All" || selectedGenre === "Non-Fiction"
-        ? [...recommendedBooks]
-        : recommendedBooks.filter(book => book?.categories?.includes(selectedGenre));
+      let filtered =
+        selectedGenre === 'All' || selectedGenre === 'Non-Fiction'
+          ? [...recommendedBooks]
+          : recommendedBooks.filter((book) =>
+              book?.categories?.includes(selectedGenre)
+            )
 
       // Then filter by search query if there is one
       if (searchQuery && searchQuery.trim() !== '') {
-        const query = searchQuery.toLowerCase();
-        filtered = filtered.filter(book =>
-          (book?.title && book.title.toLowerCase().includes(query)) ||
-          (book?.author && book.author.toLowerCase().includes(query)) ||
-          (book?.description && book.description.toLowerCase().includes(query))
-        );
+        const query = searchQuery.toLowerCase()
+        filtered = filtered.filter(
+          (book) =>
+            (book?.title && book.title.toLowerCase().includes(query)) ||
+            (book?.author && book.author.toLowerCase().includes(query)) ||
+            (book?.description &&
+              book.description.toLowerCase().includes(query))
+        )
       }
 
-      setFilteredBooks(filtered);
+      setFilteredBooks(filtered)
     }
   }, [selectedGenre, searchQuery]) // Remove recommendedBooks dependency
 
@@ -108,7 +119,7 @@ function App() {
       </div>
       <NewsSection news={newsItems} />
     </>
-  );
+  )
 
   return (
     <div className="app">
@@ -122,13 +133,19 @@ function App() {
         <div className="content-container">
           {loading ? (
             <div className="loading-container">
-              <Loading size="large" text="Loading content..." />
+              <Loading
+                size="large"
+                text="Loading content..."
+              />
             </div>
           ) : (
             <Routes>
+
+
               <Route path="/" element={<DiscoverPage />} />
               <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/reviews/:bookId" element={<Review />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={
                 <div className="page-not-found">
@@ -136,6 +153,7 @@ function App() {
                   <p>The page you're looking for doesn't exist or is still under development.</p>
                 </div>
               } />
+
             </Routes>
           )}
         </div>
@@ -144,6 +162,7 @@ function App() {
       {/* Book detail modal */}
       {selectedBook && (
         <BookDetail
+          bookId={selectedBook.id}
           book={selectedBook}
           onClose={handleCloseBookDetails}
         />

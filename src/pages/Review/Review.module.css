@@ -1,0 +1,116 @@
+.bookDetailsContainer {
+    padding: 0 16px;
+  }
+  
+  .bookDetails {
+    background-color: var(--background-light);
+    padding: 32px;
+    margin: 46px auto;
+    max-width: 800px;
+    border-radius: 12px;
+  
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: flex-start;
+    color: white;
+  }
+  
+  .bookDetails img {
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 3 / 5;
+    border-radius: 4px;
+    background-color: var(--background-dark);
+  }
+  
+  .bookInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  
+  .bookInfo h2 {
+    color: #ccc;
+  }
+  
+  .bookInfo p {
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  .userReview {
+    background-color: var(--background-light);
+    padding: 32px;
+    margin: 16px auto;
+    max-width: 800px;
+    border-radius: 12px;
+    color: white;
+  }
+  
+  .userReview label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .userReview textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid black;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+  }
+  
+  .submitButton {
+      margin-top: 16px;
+      padding: 12px 24px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+  .deleteButton {
+      margin-top: 16px;
+      float: right;
+      padding: 12px 24px;
+      background-color: #af4c4c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+  }
+    
+    
+  
+  @media (max-width: 768px) {
+    .bookDetails {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .bookInfo {
+      width: 100%;
+      text-align: left;
+    }
+  
+    .bookDetails img {
+      margin-bottom: 16px;
+    }
+  
+    .submitButton {
+      width: 100%;
+    }
+
+    .deleteButton {
+      width: 100%;
+    }
+  }

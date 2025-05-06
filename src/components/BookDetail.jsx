@@ -1,15 +1,26 @@
+import React, { useState, useEffect } from 'react'
 import './BookDetail.css'
 import Loading from './Loading'
+import AddReviewButton from './AddReviewButton/AddReviewButton.jsx'
+import EditReviewButton from './EditReviewButton/EditReviewButton.jsx'
+import { getBookById, getReviewsForBook } from '../services/dataService.js'
 
-const BookDetail = ({ loading = false, book = {}, onClose }) => {
+const BookDetail = ({ bookId, loading = false, book = {}, onClose }) => {
   if (loading) {
     return (
       <div className="book-detail-modal">
         <div className="book-detail-container">
           <div className="book-detail-header">
-            <button className="close-btn" onClick={onClose}>✕</button>
+            <button
+              className="close-btn"
+              onClick={onClose}>
+              ✕
+            </button>
           </div>
-          <Loading size="large" text="Loading book details..." />
+          <Loading
+            size="large"
+            text="Loading book details..."
+          />
         </div>
       </div>
     )
@@ -20,13 +31,21 @@ const BookDetail = ({ loading = false, book = {}, onClose }) => {
       <div className="book-detail-container">
         <div className="book-detail-header">
           <h2>{book.title}</h2>
-          <button className="close-btn" onClick={onClose}>✕</button>
+          <button
+            className="close-btn"
+            onClick={onClose}>
+            ✕
+          </button>
         </div>
 
         <div className="book-detail-content">
           <div className="book-detail-main">
             <div className="book-cover-container">
-              <img src={book.coverImage} alt={book.title} className="book-detail-cover" />
+              <img
+                src={book.coverImage}
+                alt={book.title}
+                className="book-detail-cover"
+              />
 
               <div className="book-rating-badge">
                 <span className="rating-value">{book.rating}</span>
@@ -41,7 +60,9 @@ const BookDetail = ({ loading = false, book = {}, onClose }) => {
 
                 <div className="book-categories-list">
                   {book.categories?.map((category, index) => (
-                    <span key={index} className="category-badge">
+                    <span
+                      key={index}
+                      className="category-badge">
                       {category}
                     </span>
                   ))}
@@ -50,7 +71,9 @@ const BookDetail = ({ loading = false, book = {}, onClose }) => {
                 <div className="book-stats">
                   <div className="stat-item">
                     <span className="stat-label">Published</span>
-                    <span className="stat-value">{new Date(book.publicationDate).toLocaleDateString()}</span>
+                    <span className="stat-value">
+                      {new Date(book.publicationDate).toLocaleDateString()}
+                    </span>
                   </div>
 
                   <div className="stat-item">
@@ -71,7 +94,11 @@ const BookDetail = ({ loading = false, book = {}, onClose }) => {
             <div className="author-section">
               <h3>About the Author</h3>
               <div className="author-info">
-                <img src={author.photo} alt={author.name} className="author-photo" />
+                <img
+                  src={author.photo}
+                  alt={author.name}
+                  className="author-photo"
+                />
                 <div className="author-bio">
                   <h4>{author.name}</h4>
                   <p>{author.biography}</p>
@@ -81,18 +108,29 @@ const BookDetail = ({ loading = false, book = {}, onClose }) => {
           )}
 
           <div className="reviews-section">
-            <h3>Reviews ({book.reviews?.length || "0"})</h3>
-
+            <h3>Reviews ({book.reviews?.length || '0'})</h3>
+            <AddReviewButton
+              bookId={bookId}
+              onClose={onClose}
+            />
             {book.reviews?.length === 0 ? (
-              <div className="no-reviews">No reviews yet. Be the first to review!</div>
+              <div className="no-reviews">
+                No reviews yet. Be the first to review!
+              </div>
             ) : (
               <div className="reviews-list">
                 {book.reviews?.map((review) => (
-                  <div key={review.id} className="review-item">
+                  <div
+                    key={review.id}
+                    className="review-item">
                     <div className="review-header">
                       <div className="reviewer-info">
-                        <div className="reviewer-name">{review.reviewer_name}</div>
-                        <div className="review-date">{new Date(review.created_at).toLocaleDateString()}</div>
+                        <div className="reviewer-name">
+                          {review.reviewer_name}
+                        </div>
+                        <div className="review-date">
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </div>
                       </div>
                       <div className="review-rating">
                         {'★'.repeat(review.rating)}
@@ -100,6 +138,12 @@ const BookDetail = ({ loading = false, book = {}, onClose }) => {
                       </div>
                     </div>
                     <div className="review-content">{review.comment}</div>
+                    <EditReviewButton
+                      bookId={bookId}
+                      reviewId={review.id}
+                      content={review.comment}
+                      onClose={onClose}
+                    />
                   </div>
                 ))}
               </div>
