@@ -58,28 +58,6 @@ export const getRecommendedBooks = () => {
   return makeCallToAPI('/api/reading-materials/');
 };
 
-// Get all authors
-export const getAuthors = () => {
-  return makeCallToAPI('/api/authors/');
-};
-
-// Get an author by ID
-export const getAuthorById = async (id) => {
-  var author = null
-  try {
-    author = await makeCallToAPI(`/api/authors/${id}/`);
-  } catch {
-    
-  }
-  
-  return author
-};
-
-// Get books by author
-export const getBooksByAuthor = (authorId) => {
-  return makeCallToAPI(`/api/reading-materials/?author=${authorId}`);
-};
-
 // Get reviews for a book
 export const getReviewsForBook = (bookId) => {
   return makeCallToAPI(`/api/reviews/?book=${bookId}`);
@@ -192,9 +170,6 @@ export default {
   searchBooks,
   getFeaturedBooks,
   getRecommendedBooks,
-  getAuthors,
-  getAuthorById,
-  getBooksByAuthor,
   getReviewsForBook,
   getNewsItems,
   getAllCategories,

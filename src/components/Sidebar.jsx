@@ -9,7 +9,6 @@ const Sidebar = () => {
     { id: 'discover', name: 'Discover', icon: '🔍', path: '/' },
     { id: 'bookshelf', name: 'Bookshelf', icon: '📚', path: '/bookshelf' },
     { id: 'blog', name: 'Blog', icon: '📝', path: '/blog' },
-    { id: 'authors', name: 'Authors', icon: '✍️', path: '/authors' },
     { id: 'contact', name: 'Contact Us', icon: '📞', path: '/contact' },
   ]
 

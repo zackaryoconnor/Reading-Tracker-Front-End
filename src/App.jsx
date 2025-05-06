@@ -19,6 +19,7 @@ const Blog = lazy(() => import('./pages/Blog'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Bookshelf = lazy(() => import('./pages/Bookshelf'))
 
+
 function App() {
   const [selectedGenre, setSelectedGenre] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
@@ -139,42 +140,20 @@ function App() {
             </div>
           ) : (
             <Routes>
-              <Route
-                path="/"
-                element={<DiscoverPage />}
-              />
-              <Route
-                path="/bookshelf"
-                element={<Bookshelf onViewDetails={handleViewBookDetails} />}
-              />
-              <Route
-                path="/authors"
-                element={<Authors onViewDetails={handleViewBookDetails} />}
-              />
-              <Route
-                path="/reviews/:bookId"
-                element={<Review />}
-              />
-              <Route
-                path="/blog"
-                element={<Blog />}
-              />
-              <Route
-                path="/contact"
-                element={<Contact />}
-              />
-              <Route
-                path="*"
-                element={
-                  <div className="page-not-found">
-                    <h2>Page Not Found</h2>
-                    <p>
-                      The page you're looking for doesn't exist or is still
-                      under development.
-                    </p>
-                  </div>
-                }
-              />
+
+
+              <Route path="/" element={<DiscoverPage />} />
+              <Route path="/bookshelf" element={<Bookshelf onViewDetails={handleViewBookDetails} />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/reviews/:bookId" element={<Review />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={
+                <div className="page-not-found">
+                  <h2>Page Not Found</h2>
+                  <p>The page you're looking for doesn't exist or is still under development.</p>
+                </div>
+              } />
+
             </Routes>
           )}
         </div>
