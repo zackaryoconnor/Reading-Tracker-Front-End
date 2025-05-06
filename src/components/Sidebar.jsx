@@ -11,8 +11,6 @@ const Sidebar = () => {
     { id: 'blog', name: 'Blog', icon: '📝', path: '/blog' },
     { id: 'authors', name: 'Authors', icon: '✍️', path: '/authors' },
     { id: 'contact', name: 'Contact Us', icon: '📞', path: '/contact' },
-    { id: 'help', name: 'Help Center', icon: '❓', path: '/help' },
-    { id: 'settings', name: 'Setting', icon: '⚙️', path: '/settings' }
   ]
 
   const toggleMobileMenu = () => {
@@ -48,14 +46,6 @@ const Sidebar = () => {
             </NavLink>
           ))}
         </nav>
-
-        <div className="subscription-box">
-          <div className="sub-info">
-            <div className="sub-title">Click the button below</div>
-            <div className="sub-desc">to see the plans</div>
-          </div>
-          <button className="sub-button">see plans</button>
-        </div>
       </div>
     </>
   )

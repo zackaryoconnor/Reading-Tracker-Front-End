@@ -10,7 +10,7 @@ export default function AddReviewButton({ bookId, onClose, ...props }) {
     return null
   }
 
-  const path = `/review/${ bookId }`
+  const path = `/reviews/${ bookId }`
 
   const handleClick = (event) => {
     onClose?.()
@@ -22,7 +22,7 @@ export default function AddReviewButton({ bookId, onClose, ...props }) {
     <button
     className={ styles.addReviewButton }  
     type="button"
-    onClick={() => navigate(path)}
+    onClick={handleClick}
     {...props}
       
       

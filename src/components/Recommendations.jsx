@@ -1,68 +1,46 @@
-import { useEffect, useState } from 'react'
-import { getBooksByCategory, getRecommendedBooks, searchBooks } from '../services/dataService'
-import BookCard from './BookCard'
-import './Recommendations.css'
+import React from "react";
+import BookCard from "./BookCard";
+import "./Recommendations.css";
 
-const Recommendations = ({ genre, searchQuery, onViewDetails }) => {
-  const [books, setBooks] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      setLoading(true)
-      try {
-        let results = []
-
-        if (searchQuery) {
-          // If there's a search query, use it
-          results = await searchBooks(searchQuery)
-        } else if (genre && genre !== 'All') {
-          // If a specific genre is selected
-          results = await getBooksByCategory(genre)
-        } else {
-          // Default to recommended books
-          results = await getRecommendedBooks()
-        }
-
-        setBooks(results)
-        setError(null)
-      } catch (err) {
-        console.error('Error fetching books:', err)
-        setError('Failed to load books. Please try again later.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchBooks()
-  }, [genre, searchQuery])
-
-  const handleViewDetails = (bookId) => {
+const Recommendations = ({
+  books = [],
+  loading = false,
+  genre,
+  searchQuery,
+  onViewDetails,
+}) => {
+  const handleViewDetails = (book) => {
     if (onViewDetails) {
-      onViewDetails(bookId)
+      onViewDetails(book);
     }
-  }
+  };
 
   return (
     <div className="recommendations">
       <div className="section-header">
-        <h2>
+        {/* Heading title */}
+        <h2
+          style={{
+            opacity: 0.25,
+            width: "max-content",
+            textDecoration: "underline",
+            textUnderlineOffset: "10px",
+          }}
+        >
           {searchQuery
             ? `Search Results for "${searchQuery}"`
-            : genre !== 'All'
+            : genre !== "All"
               ? `${genre} Books`
-              : 'Recommended For You'}
+              : "Recommended For You"}
         </h2>
-        <a href="#" className="view-all">
+
+        <a href="/bookshelf" className="view-all">
           View All <span className="arrow">→</span>
         </a>
       </div>
 
       {loading ? (
         <div className="loading-books">Loading books...</div>
-      ) : error ? (
-        <div className="error-message">{error}</div>
       ) : books.length === 0 ? (
         <div className="no-books-message">
           {searchQuery
@@ -71,17 +49,17 @@ const Recommendations = ({ genre, searchQuery, onViewDetails }) => {
         </div>
       ) : (
         <div className="books-grid">
-          {books.map(book => (
+          {books?.map((book) => (
             <BookCard
               key={book.id}
               book={book}
-              onViewDetails={() => handleViewDetails(book.id)}
+              onViewDetails={() => handleViewDetails(book)}
             />
           ))}
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Recommendations
+export default Recommendations;

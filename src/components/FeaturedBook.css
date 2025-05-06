@@ -80,6 +80,8 @@
 .featured-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .btn-primary {
@@ -89,14 +91,18 @@
   border-radius: 6px;
   font-weight: 600;
   font-size: 16px;
-  margin-right: 15px;
   transition: background-color 0.3s;
   border: none;
   cursor: pointer;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: var(--primary-dark);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -106,7 +112,6 @@
   border-radius: 6px;
   font-weight: 500;
   font-size: 16px;
-  margin-right: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
@@ -115,6 +120,22 @@
 .btn-secondary:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-random {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-random:hover {
+  background-color: var(--primary-dark);
 }
 
 .navigation-controls {
@@ -144,9 +165,25 @@
   color: var(--text-dark);
 }
 
+@media (max-width: 992px) {
+  .featured-description {
+    max-width: 90%;
+  }
+
+  .featured-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navigation-controls {
+    margin-left: 0;
+    margin-top: 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .featured-book {
-    height: 350px;
+    height: 450px;
   }
 
   .featured-content {
@@ -162,14 +199,20 @@
     font-size: 14px;
   }
 
-  .btn-primary, .btn-secondary {
+  .btn-primary, .btn-secondary, .btn-random {
     padding: 8px 16px;
     font-size: 14px;
+    width: 100%;
   }
 
   .nav-btn {
     width: 36px;
     height: 36px;
     font-size: 16px;
+  }
+
+  .navigation-controls {
+    width: 100%;
+    justify-content: center;
   }
 }

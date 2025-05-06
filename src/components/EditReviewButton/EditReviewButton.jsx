@@ -4,7 +4,7 @@ import styles from './EditReviewButton.module.css'
 
 
 
-export default function EditReviewButton({ bookId, content, onClose, ...props }) {
+export default function EditReviewButton({ bookId, reviewId, content, onClose, ...props }) {
   const navigate = useNavigate()
 
   if (!bookId) {
@@ -12,11 +12,11 @@ export default function EditReviewButton({ bookId, content, onClose, ...props })
     return null
   }
 
-  const path = `/review/${ bookId }`
+  const path = `/reviews/${ bookId }`
 
   const handleClick = (event) => {
     onClose?.()
-    navigate(path, { state: { initialComment: content } })
+    navigate(path, { state: { initialComment: content, reviewId } })
     props.onClick?.(event)
   }
   

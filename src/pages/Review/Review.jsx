@@ -3,6 +3,8 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { addReview, getBookById } from '../../services/dataService.js'
 import styles from './Review.module.css'
 import axios from 'axios'
+const url = import.meta.env.VITE_API_URL
+
 
 const Review = () => {
   const { bookId } = useParams()
@@ -14,16 +16,19 @@ const Review = () => {
 
   const [book, setBook] = useState(null)
   const [reviewText, setReviewText] = useState(initialText)
+  const [review, setReview] = useState(null)
 
-  // HARD CODED DATA
   const reviewer_name = 'user'
   const rating = 5
 
   useEffect(() => {
+    console.log('line 24')
     if (!bookId) return
+    console.log('line 25')
     const fetchBook = async () => {
       try {
         const result = await getBookById(bookId)
+        console.log(result)
         setBook(result)
       } catch (error) {
         console.error('Add Review', error)
@@ -48,7 +53,7 @@ const Review = () => {
 
     try {
       const response = await axios.post(
-        'http://100.24.54.166:8000/api/reviews/',
+        `${url}/api/reviews/`,
         newReview
       )
       console.log('Review submitted successfully:', response.data)
@@ -64,21 +69,21 @@ const Review = () => {
     const reviewId = state?.reviewId
     
     try {
-      await axios.delete(
-        `http://100.24.54.166:8000/api/reviews/${reviewId}/`
-      )
-      navigate(`/books/${bookId}`)
+      console.log(reviewId)
+      await axios.delete(`${url}/api/reviews/${reviewId}/`)
+      navigate(`/bookShelf`)
     } catch (error) {
-      console.error('Delete failed:', error.response?.data || error.message)
-      alert('Could not delete review.')
+      console.error('Delete failed:', error)
     }
+
   }
 
+  console.log('76')
   return (
     <div className={styles.bookDetailsContainer}>
+      console
       <div className={styles.bookDetails}>
         <img
-          // src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1597695864i/54493401.jpg"
           src={book.coverImage}
           alt={book.title}
         />

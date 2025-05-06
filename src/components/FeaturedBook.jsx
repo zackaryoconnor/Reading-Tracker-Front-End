@@ -5,12 +5,13 @@ import './FeaturedBook.css'
 const FeaturedBook = ({ book, onViewDetails }) => {
   const [isReading, setIsReading] = useState(false)
 
+
+  const featuredBookIds = [1, 2, 3, 4];
+
   const handleReadNow = async () => {
     try {
       await updateReadingStatus(book.id, 'reading', 0)
       setIsReading(true)
-
-      // In a real app, you might want to update the global state or refetch data
       setTimeout(() => {
         setIsReading(false)
       }, 2000)
@@ -24,6 +25,15 @@ const FeaturedBook = ({ book, onViewDetails }) => {
       onViewDetails(book.id)
     }
   }
+  const pickRandomBook = () => {
+    const randomIndex = Math.floor(Math.random() * featuredBookIds.length);
+    const randomBookId = featuredBookIds[randomIndex];
+
+    if (onViewDetails) {
+      onViewDetails(randomBookId);
+    }
+  };
+
 
   return (
     <div className="featured-book">
@@ -38,7 +48,7 @@ const FeaturedBook = ({ book, onViewDetails }) => {
           </div>
 
           <div className="featured-genres">
-            {book.categories.map((genre, index) => (
+            {book?.categories?.map((genre, index) => (
               <span key={index} className="genre-tag">
                 {genre}
                 {index < book.categories.length - 1 && " • "}
@@ -63,10 +73,12 @@ const FeaturedBook = ({ book, onViewDetails }) => {
           >
             View Details
           </button>
-          <div className="navigation-controls">
-            <button className="nav-btn prev">❮</button>
-            <button className="nav-btn next">❯</button>
-          </div>
+          <button
+            className="btn-random"
+            onClick={pickRandomBook}
+          >
+            Pick a Story for Me!
+          </button>
         </div>
       </div>
     </div>
