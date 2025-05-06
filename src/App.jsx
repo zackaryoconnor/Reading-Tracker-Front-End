@@ -7,6 +7,7 @@ import {
 } from './services/dataService'
 import Review from './pages/Review/Review'
 
+
 const BookDetail = lazy(() => import('./components/BookDetail'))
 const FeaturedBook = lazy(() => import('./components/FeaturedBook'))
 const Header = lazy(() => import('./components/Header'))
@@ -14,7 +15,6 @@ const Loading = lazy(() => import('./components/Loading'))
 const NewsSection = lazy(() => import('./components/NewsSection'))
 const Recommendations = lazy(() => import('./components/Recommendations'))
 const Sidebar = lazy(() => import('./components/Sidebar'))
-// const Authors = lazy(() => import('./pages/Authors'))
 const Blog = lazy(() => import('./pages/Blog'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Bookshelf = lazy(() => import('./pages/Bookshelf'))
