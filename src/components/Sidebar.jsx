@@ -25,7 +25,7 @@ const Sidebar = () => {
       <div className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <NavLink to="/" className="logo">
-            <span className="logo-text">T.Book</span>
+            <span className="logo-text">ChapterList</span>
           </NavLink>
           <div className="menu-label">Menu</div>
         </div>

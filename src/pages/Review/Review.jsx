@@ -5,7 +5,6 @@ import styles from './Review.module.css'
 import axios from 'axios'
 const url = import.meta.env.VITE_API_URL
 
-
 const Review = () => {
   const { bookId } = useParams()
   const navigate = useNavigate()
@@ -22,9 +21,7 @@ const Review = () => {
   const rating = 5
 
   useEffect(() => {
-    console.log('line 24')
     if (!bookId) return
-    console.log('line 25')
     const fetchBook = async () => {
       try {
         const result = await getBookById(bookId)
@@ -52,11 +49,8 @@ const Review = () => {
     console.log('Add Review Submitting review:', newReview)
 
     try {
-      const response = await axios.post(
-        `${url}/api/reviews/`,
-        newReview
-      )
-      console.log('Review submitted successfully:', response.data)
+      const response = await axios.post(`${url}/api/reviews/`, newReview)
+      navigate(`/bookShelf`)
       setReviewText('')
     } catch (error) {
       console.error('Add Review Status:', error.response.status)
@@ -67,7 +61,7 @@ const Review = () => {
 
   const handleDelete = async () => {
     const reviewId = state?.reviewId
-    
+
     try {
       console.log(reviewId)
       await axios.delete(`${url}/api/reviews/${reviewId}/`)
@@ -75,34 +69,22 @@ const Review = () => {
     } catch (error) {
       console.error('Delete failed:', error)
     }
-
   }
 
   console.log('76')
   return (
     <div className={styles.bookDetailsContainer}>
-      console
+      <button className={styles.backButton} onClick={() => {navigate(`/bookShelf`)}}>Back to Bookshelf</button>
       <div className={styles.bookDetails}>
-        <img
-          src={book.coverImage}
-          alt={book.title}
-        />
+        <img src={book.coverImage} alt={book.title} />
 
         <div className={styles.bookInfo}>
           <h1>{book.title}</h1>
           <h2>By: {book.authorName}</h2>
-          <p>
-            <strong>Rating:</strong> {book.rating}
-          </p>
-          <p>
-            <strong>Publication Date:</strong> {book.publicationDate}
-          </p>
-          <p>
-            <strong>Genre:</strong> {book.categories.join(',')}
-          </p>
-          <p>
-            <strong>Description:</strong> {book.description}
-          </p>
+          <p><strong>Rating:</strong> {book.rating}</p>
+          <p><strong>Publication Date:</strong> {book.publicationDate}</p>
+          <p><strong>Genre:</strong> {book.categories.join(',')}</p>
+          <p><strong>Description:</strong> {book.description}</p>
         </div>
       </div>
 
@@ -115,22 +97,11 @@ const Review = () => {
           value={reviewText}
           onChange={(event) => setReviewText(event.target.value)}
         />
-        <button
-          className={styles.submitButton}
-          onClick={() => {
-            handleSubmit()
-            console.log('Add Review', reviewText)
-          }}>
-          Submit Review
-        </button>
-        <button
-          className={styles.deleteButton}
-          onClick={() => {
-            handleDelete()
-            console.log('Deleted Review', reviewText)
-          }}>
-          Delete Review
-        </button>
+        <button className={styles.submitButton} onClick={() => {handleSubmit()}} disabled={!reviewText.trim()}>
+          {reviewId ? 'Update Review' : 'Submit Review'}</button>
+        {reviewId && reviewText.trim() !== '' && (
+          <button className={styles.deleteButton} onClick={() => { handleDelete() }}>Delete Review</button>
+        )}
       </div>
     </div>
   )

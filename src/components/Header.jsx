@@ -142,7 +142,7 @@ const Header = ({ onGenreChange, onSearch }) => {
   return (
     <header className="header">
       <div className="logo" onClick={() => navigate('/')}>
-        <span className="logo-text">T.Book</span>
+        <span className="logo-text">ChapterList</span>
       </div>
 
       {renderHeaderContent()}
