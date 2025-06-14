@@ -4,7 +4,7 @@ A collaborative full-stack project built during our General Assembly Software En
 
 ## Live Demo 🚀
 
-Visit our app: [ChapterList](http://44.203.74.69:3004/)
+Visit our app: [ChapterList](http://54.165.74.209:3004/)
 
 ## Project Overview
 
@@ -39,24 +39,28 @@ This project was built as part of a 4-person team effort, we split into frontend
 ## Local Setup
 
 1. Clone the repository:
-```bash
-git clone https://github.com/zackaryoconnor/Front-End.git
-```
+    ```bash
+    git clone https://github.com/zackaryoconnor/Front-End.git
+    ```
 
 2. Install dependencies:
-```bash
-npm install
-```
+    ```bash
+    npm install
+    ```
 
 3. Create a `.env` file with necessary configurations:
-```
-VITE_API_URL=your_backend_api_url
-```
+    ```
+    VITE_API_URL=your_backend_api_url
+    ```
 
-4. Start the development server:
-```bash
-npm run dev
-```
+4. Run the dev server:
+     ```bash
+     npm run dev
+     ```
+     or
+     ```bash
+     npm run dev -- --host localhost --port 5137
+     ```
 
 ## Deployment
 
