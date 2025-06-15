@@ -4,7 +4,7 @@ A collaborative full-stack project built during our General Assembly Software En
 
 ## Live Demo 🚀
 
-Visit our app: [ChapterList](http://54.165.74.209:3004/)
+Visit our app: [ChapterList](http://44.215.35.137:3004/)
 
 ## Project Overview
 
