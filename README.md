@@ -2,10 +2,6 @@
 
 A collaborative full-stack project built during our General Assembly Software Engineering bootcamp. This React application serves as the frontend interface for our Reading Materials API, allowing users to discover, save, and review their favorite reading materials.
 
-## Live Demo 🚀
-
-Visit our app: [ChapterList](http://44.215.35.137:3004/)
-
 ## Project Overview
 
 This project was built as part of a 4-person team effort, we split into frontend and backend teams. The frontend focuses on delivering a smooth user experience for managing reading materials and their reviews.
